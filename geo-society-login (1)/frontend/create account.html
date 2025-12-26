@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account | Geo Society – University of Malawi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1b5e20, #2e7d32, #4caf50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+            padding: 30px 26px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-box {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            border: 3px dashed #2e7d32;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2e7d32;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #777;
+            margin-top: 3px;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 13px;
+            margin-top: 10px;
+            background: #2e7d32;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .register-btn:hover {
+            background: #1b5e20;
+        }
+
+        .links {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .links a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-container">
+
+    <div class="logo-box">
+        GEO SOCIETY<br>LOGO
+    </div>
+
+    <h2>Create Account</h2>
+    <p class="subtitle">Geo Society Portal – University of Malawi</p>
+
+    <form id="registerForm">
+
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="e.g. Fortune Kamphinda" required>
+        </div>
+
+        <div class="form-group">
+            <label>Student ID</label>
+            <input type="text"
+                   id="studentId"
+                   placeholder="e.g. BSC-GEO-19-24"
+                   required>
+            <div class="hint">Allowed: BSC-GEO-YY-YY, BED-GEO-YY-YY, BSC-GLY-YY-YY</div>
+        </div>
+
+        <div class="form-group">
+            <label>University Email</label>
+            <input type="email"
+                   id="email"
+                   placeholder="ID@unima.ac.mw"
+                   readonly
+                   required>
+            <div class="hint">Email is generated automatically</div>
+        </div>
+
+        <div class="form-group">
+            <label>Year of Study</label>
+            <select required>
+                <option value="">Select year</option>
+                <option>Year 1</option>
+                <option>Year 2</option>
+                <option>Year 3</option>
+                <option>Year 4</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" required>
+            <div class="hint">Minimum 8 characters, letters & numbers</div>
+        </div>
+
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" required>
+        </div>
+
+        <button class="register-btn">Create Account</button>
+    </form>
+
+    <div class="links">
+        Already have an account?
+        <a href="login.html">Login</a>
+    </div>
+
+    <div class="footer-text">
+        Geo Society – University of Malawi
+    </div>
+
+</div>
+
+<script>
+const studentIdInput = document.getElementById("studentId");
+const emailInput = document.getElementById("email");
+const form = document.getElementById("registerForm");
+
+const idPattern = /^(BSC-GEO|BED-GEO|BSC-GLY)-\d{2}-\d{2}$/;
+
+studentIdInput.addEventListener("input", () => {
+    const id = studentIdInput.value.toUpperCase().trim();
+    studentIdInput.value = id;
+
+    if (idPattern.test(id)) {
+        emailInput.value = `${id}@unima.ac.mw`.toLowerCase();
+    } else {
+        emailInput.value = "";
+    }
+});
+
+form.addEventListener("submit", (e) => {
+    const id = studentIdInput.value.trim().toUpperCase();
+
+    if (!idPattern.test(id)) {
+        alert(
+            "Invalid Student ID format.\n\n" +
+            "Use one of the following:\n" +
+            "• BSC-GEO-YY-YY\n" +
+            "• BED-GEO-YY-YY\n" +
+            "• BSC-GLY-YY-YY"
+        );
+        e.preventDefault();
+    }
+});
+</script>
+
+</body>
+</html>

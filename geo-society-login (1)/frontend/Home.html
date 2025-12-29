@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Geo Society | Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Arial,sans-serif;}
+body{background:#f0f2f5;color:#333;}
+a{text-decoration:none;}
+h3{margin-bottom:10px;font-size:16px}
+
+/* ===== NOTIFICATION ===== */
+.notifications {
+    padding: 8px 12px;
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: none; /* hidden by default */
+    font-size: 13px;
+}
+
+/* ===== MENU ACTIVE ===== */
+.menu a.active{
+    background:#2e7d32;
+    color:#fff;
+    font-weight:600;
+}
+
+/* ===== IMAGE DOWNLOAD BUTTON ===== */
+.image-download-wrapper{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:8px;
+}
+.download-btn{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:linear-gradient(90deg,#2e7d32,#1b5e20);
+    color:#fff;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    cursor:pointer;
+    border:none;
+    transition:0.3s;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+.download-btn:hover{
+    transform:translateY(-1px);
+}
+
+/* ===== IMAGE PREVIEW MODAL ===== */
+#imagePreviewModal{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.85);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+}
+.preview-box{
+    position:relative;
+    background:#111;
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+    max-width:90%;
+    max-height:90%;
+}
+.preview-image-container{
+    position:relative;
+    display:inline-block;
+}
+.preview-image-container img{
+    max-width:100%;
+    max-height:70vh;
+    border-radius:10px;
+    transition:.3s;
+    display:block;
+}
+.preview-actions{
+    position:absolute;
+    bottom:10px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    background:rgba(0,0,0,0.5);
+    padding:6px 12px;
+    border-radius:20px;
+}
+.preview-actions button{
+    background:#2e7d32;
+    color:#fff;
+    border:none;
+    padding:6px 12px;
+    border-radius:20px;
+    cursor:pointer;
+}
+.preview-close{
+    position:fixed;
+    top:15px;
+    right:20px;
+    background:#d32f2f;
+    color:#fff;
+    border:none;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+    z-index:100001;
+    pointer-events:auto;
+}
+
+
+
+/* ===== NAVBAR ===== */
+.navbar{
+    background:linear-gradient(90deg,#2e7d32,#1b5e20);
+    color:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 12px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+.nav-left{display:flex;align-items:center;gap:8px}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.logo{
+    width:36px;height:36px;border-radius:50%;
+    background:#fff;color:#2e7d32;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:bold;cursor:pointer;font-size:14px;
+}
+
+/* ===== SEARCH BOX WITH BUTTON ===== */
+.search-box{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+.search-box input{
+    padding:6px 12px;border-radius:20px;border:none;width:180px;font-size:14px;
+}
+.search-box button{
+    background:#fff;border:none;padding:6px 10px;border-radius:20px;
+    cursor:pointer;font-size:14px;color:#2e7d32;
+    transition:0.3s;
+}
+.search-box button:hover{
+    background:#e8f5e9;
+}
+
+/* ===== PROFILE BUTTON ===== */
+.profile-btn{
+    background:#1b5e20;padding:4px 12px;border-radius:25px;cursor:pointer;color:#fff;position:relative;
+    display:flex;align-items:center;gap:5px;font-size:14px;
+}
+.profile-btn img{
+    width:30px;height:30px;border-radius:50%;
+}
+.profile-dropdown{
+    display:none;
+    position:absolute;
+    top:40px;
+    right:0;
+    background:#fff;color:#333;
+    min-width:120px;
+    border-radius:8px;
+    box-shadow:0 4px 12px rgba(0,0,0,.2);
+    overflow:hidden;
+}
+.profile-dropdown a{
+    display:block;padding:8px;
+    cursor:pointer;font-size:14px;
+}
+.profile-dropdown a:hover{background:#e8f5e9}
+
+/* ===== MAIN ===== */
+.main{
+    display:grid;
+    grid-template-columns:260px 1fr 300px;
+    gap:15px;
+    max-width:1300px;
+    margin:15px auto;
+    padding:0 12px;
+}
+.sidebar,.rightbar{
+    background:#fff;border-radius:12px;padding:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+.menu a{
+    display:block;padding:8px;border-radius:8px;
+    margin-bottom:5px;color:#333;font-size:14px;
+}
+.menu a:hover{background:#e8f5e9}
+
+/* ===== COLLAPSIBLE MENU BUTTON ===== */
+#menuToggle{
+    display:none;
+    background:#2e7d32;color:#fff;padding:6px 12px;border:none;border-radius:20px;
+    cursor:pointer;font-size:14px;
+}
+
+/* ===== FEED ===== */
+.feed{display:flex;flex-direction:column;gap:15px}
+.post-box,.post{
+    background:#fff;padding:15px;border-radius:12px;
+    box-shadow:0 6px 12px rgba(0,0,0,.08);
+}
+.post-box textarea{
+    width:100%;border:none;padding:8px;
+    border-radius:10px;background:#f5f7f5;font-size:14px;
+}
+.post-actions{display:flex;justify-content:space-between;margin-top:8px}
+.post-actions button{
+    background:#2e7d32;color:#fff;
+    border:none;padding:6px 14px;border-radius:20px;font-size:14px;
+}
+.post-header{font-weight:700;color:#2e7d32;display:flex;align-items:center;gap:8px;justify-content:space-between;font-size:14px;}
+.post-header img{width:32px;height:32px;border-radius:50%;}
+.post-content{margin:8px 0;font-size:14px}
+.post-content img{max-width:100%;border-radius:10px;margin-top:8px;font-size:14px}
+
+/* ===== REACTIONS ===== */
+.reactions{
+    display:flex;
+    gap:8px;
+    margin-top:5px;font-size:13px;
+}
+.reactions span{
+    cursor:pointer;
+    padding:3px 6px;
+    border-radius:20px;
+    background:#f0f2f5;
+    font-size:12px;
+    transition:0.3s;
+}
+.reactions span:hover{background:#e8f5e9}
+.reactions span.active{
+    background:#2e7d32;
+    color:#fff;
+}
+
+/* ===== COMMENTS & REPLIES ===== */
+.comment-input,.reply-input{
+    width:calc(100% - 50px);
+    padding:6px 8px;
+    border-radius:8px;
+    border:1px solid #ccc;font-size:13px;
+}
+.comment-wrapper,.reply-wrapper{
+    display:flex;
+    gap:5px;
+    margin-top:5px
+}
+.comments,.replies{margin-top:8px}
+.comment,.reply{
+    background:#f0f2f5;
+    padding:5px 8px;
+    border-radius:8px;
+    margin-bottom:5px;font-size:13px;
+}
+.comment-header,.reply-header{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:12px;
+    margin-bottom:2px;
+    justify-content:space-between;
+}
+.comment-header img,.reply-header img{width:24px;height:24px;border-radius:50%;}
+.comment-text,.reply-text{margin-left:28px;font-size:13px;}
+
+/* ===== READ MORE / LESS ===== */
+.collapsed {
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    cursor: pointer;
+}
+.collapsed.expanded {
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    overflow: visible;
+}
+
+/* ===== PROFILE MODAL ===== */
+#profileModal{
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;align-items:center;
+}
+#profileModal .modal-content{
+    background:#fff;padding:20px;border-radius:12px;width:280px;position:relative;
+}
+#profileModal .modal-content span.close{
+    position:absolute;top:10px;right:15px;cursor:pointer;font-weight:bold;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+    .main{
+        grid-template-columns:1fr;
+        gap:10px;
+    }
+    .sidebar{
+        width:100%;
+        order:-1;
+        margin-bottom:10px;
+        display:none;
+    }
+    .rightbar{display:none;}
+    #menuToggle{display:block;}
+    #sidebarMenu{
+        display:none;
+        width:100%;
+        background:#fff;
+        border-radius:12px;
+        padding:10px;
+        box-shadow:0 4px 12px rgba(0,0,0,.15);
+        position:fixed;
+        top:60px;
+        left:0;
+        z-index:99;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+    #sidebarMenu.active{display:flex;}
+    #sidebarMenu .menu{
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+    #sidebarMenu .menu a{
+        padding:6px 12px;
+        border-radius:20px;
+        margin:4px 0;
+        background:#e8f5e9;
+        transition:0.3s;
+    }
+    #sidebarMenu .menu a:hover{
+        background:#c8e6c9;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+    <!-- IMAGE PREVIEW MODAL ⭐ -->
+<div id="imagePreviewModal">
+    <div class="preview-box">
+        <button class="preview-close" onclick="closeImagePreview()">✕</button>
+        <div class="preview-image-container">
+            <img id="previewImage">
+            <div class="preview-actions">
+                <button onclick="zoomImage(1)">➕ Zoom</button>
+                <button onclick="zoomImage(-1)">➖ Zoom</button>
+                <button onclick="downloadPreviewImage()">⬇ Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+// ======================= IMAGE MODAL LOGIC =======================
+let previewScale = 1;
+let previewSrc = "";
+
+function openImagePreview(src){
+    previewScale = 1;
+    previewSrc = src;
+    const img = document.getElementById("previewImage");
+    img.src = src;
+    img.style.transform = "scale(1)";
+    document.getElementById("imagePreviewModal").style.display = "flex";
+}
+function closeImagePreview(){
+    document.getElementById("imagePreviewModal").style.display = "none";
+}
+function zoomImage(dir){
+    previewScale += dir*0.2;
+    previewScale = Math.max(0.6, Math.min(3, previewScale));
+    document.getElementById("previewImage").style.transform = `scale(${previewScale})`;
+}
+function downloadPreviewImage(){
+    const a = document.createElement("a");
+    a.href = previewSrc;
+    a.download = "image";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+</script>
+
+
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <div class="logo">GEO</div>
+        <div class="search-box">
+            <input id="searchInput" placeholder="Search...">
+        </div>
+    </div>
+    <div class="nav-right">
+        <button id="menuToggle" onclick="toggleSidebar()">☰</button>
+        <div class="profile-btn" onclick="toggleDropdown()">
+            <img id="navbarProfilePic" src="">
+            <span id="navbarUsername">User ▼</span>
+            <div class="profile-dropdown" id="profileDropdown">
+                <a onclick="openProfile()">Settings</a>
+                <a onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Profile Modal -->
+<div id="profileModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeProfile()">X</span>
+        <h3>Settings</h3>
+        <div style="margin:10px 0;">
+            <label>Profile Picture:</label><br>
+            <input type="file" id="profilePicInput">
+            <img id="profilePicPreview" src="" style="width:60px;height:60px;border-radius:50%;margin-top:5px;">
+        </div>
+        <div style="margin:10px 0;">
+            <label>Username:</label><br>
+            <input type="text" id="profileUsername" style="width:100%;padding:5px;">
+        </div>
+        <div style="margin-top:15px;display:flex;justify-content:space-between;">
+            <button onclick="saveProfile()" style="background:#2e7d32;color:#fff;padding:7px 15px;border:none;border-radius:8px;">Save</button>
+            <button onclick="logout()" style="background:#d32f2f;color:#fff;padding:7px 15px;border:none;border-radius:8px;">Logout</button>
+        </div>
+    </div>
+</div>
+
+<div class="main">
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebarMenu">
+    <h3>Menu</h3>
+    <div class="menu">
+        <a href="#resources">Resources</a>
+        <a href="#discussions">Discussions</a>
+        <a href="#maps">Maps & GIS</a>
+        <a href="#images">Images</a>
+        <a href="#all">All</a>
+    </div>
+</div>
+
+<!-- FEED -->
+<div class="feed">
+
+<div class="sort-bar">
+    <strong>Sort Posts:</strong>
+    <select id="sortSelect" onchange="sortPosts()">
+        <option value="latest">Latest</option>
+        <option value="popular">Most Reacted</option>
+    </select>
+</div>
+
+<div class="post-box">
+    <textarea id="postText" rows="2" placeholder="Write something..."></textarea>
+    <input type="file" id="postFile">
+    <select id="postType">
+        <option value="discussion">Discussion</option>
+        <option value="map">Map</option>
+        <option value="document">Document</option>
+        <option value="image">Image</option>
+    </select>
+<div class="post-actions">
+    <button onclick="createPost()">Post</button>
+    <button onclick="createPoll()">Create Poll</button>
+</div>
+
+                                 
+
+    
+
+<div id="discussions" class="section">
+    <div class="notifications"></div>
+    <div class="posts"></div>
+</div>
+
+<div id="maps" class="section">
+    <div class="notifications"></div>
+    <div class="posts"></div>
+</div>
+
+<div id="resources" class="section">
+    <div class="notifications"></div>
+    <div class="posts"></div>
+</div>
+
+<div id="images" class="section">
+    <div class="notifications"></div>
+    <div class="posts"></div>
+</div>
+
+ 
+</div>
+<!-- ALL POSTS BUTTON (rightbar) -->
+<div class="rightbar" id="allPostsButton">
+    <button onclick="showAllPosts()" style="width:100%;padding:10px;border:none;border-radius:12px;background:#2e7d32;color:#fff;font-size:14px;cursor:pointer;">
+        Show All Posts
+    </button>
+</div>
+
+</div>
+
+<footer style="text-align:center;margin:20px 0;color:#777">
+Geo Society – University of Malawi © 2026
+</footer>
+
+<script>
+// ======================= USER & PROFILE SETTINGS =======================
+let currentUsername = "User";
+let currentProfilePic = "";
+let currentEmail = "user@example.com"; // <-- email used at signup/login, never changes
+
+// Predefined other users for demo
+const userEmails = {
+    "Alice": "alice@example.com",
+    "Bob": "bob@example.com"
+};
+
+function toggleDropdown(){
+    const dd = document.getElementById("profileDropdown");
+    dd.style.display = dd.style.display==="block"?"none":"block";
+}
+function openProfile(){
+    document.getElementById("profileModal").style.display="flex";
+    document.getElementById("profileUsername").value = currentUsername;
+    document.getElementById("profilePicPreview").src = currentProfilePic || "";
+}
+function closeProfile(){ document.getElementById("profileModal").style.display="none"; }
+document.getElementById("profilePicInput").addEventListener("change", function(){
+    const file = this.files[0];
+    if(file){
+        currentProfilePic = URL.createObjectURL(file);
+        document.getElementById("profilePicPreview").src = currentProfilePic;
+        document.getElementById("navbarProfilePic").src = currentProfilePic;
+    }
+});
+function saveProfile(){
+    currentUsername = document.getElementById("profileUsername").value.trim() || "User";
+    document.getElementById("navbarUsername").innerText = `${currentUsername} ▼`;
+    closeProfile();
+}
+function logout(){ window.location.href = "index.html"; }
+
+// ======================= READ MORE / LESS =======================
+function addReadMoreIfNeeded(containerSelector, textSelector){
+    const elements = containerSelector.querySelectorAll(textSelector);
+    elements.forEach(el=>{
+        const lineHeight = parseInt(window.getComputedStyle(el).lineHeight);
+        const maxHeight = lineHeight*6;
+        if(el.scrollHeight > maxHeight){
+            el.classList.add("collapsed");
+            if(!el.nextElementSibling || !el.nextElementSibling.classList.contains("read-more-comment")){
+                const readMore = document.createElement("span");
+                readMore.className = "read-more-comment";
+                readMore.innerText = "Read more";
+                readMore.style.color="#2e7d32"; readMore.style.cursor="pointer"; readMore.style.fontSize="12px";
+                el.insertAdjacentElement("afterend", readMore);
+            }
+        } else {
+            if(el.nextElementSibling && el.nextElementSibling.classList.contains("read-more-comment")){
+                el.nextElementSibling.remove();
+            }
+        }
+    });
+}
+document.addEventListener("click", function(e){
+    if(e.target.classList.contains("read-more-comment")){
+        const textDiv = e.target.previousElementSibling;
+        textDiv.classList.toggle("expanded");
+        e.target.innerText = textDiv.classList.contains("expanded")?"Read less":"Read more";
+    }
+});
+
+// ======================= SHOW NOTIFICATION =====================
+function showNotification(sectionId, message){
+    const notification =
+        document.getElementById(sectionId)
+        .querySelector(".notifications");
+
+    if(!notification) return;
+
+    notification.innerText = message;
+    notification.style.display = "block";
+
+    clearTimeout(notification.hideTimer);
+    notification.hideTimer = setTimeout(()=>{
+        notification.style.display="none";
+    },5000);
+}
+
+
+
+// ======================= CREATE POST =======================
+function createPost() {
+    const text = postText.value.trim();
+    const file = postFile.files[0];
+    const type = activeSection || postType.value;
+
+    const allowedExtensions = {
+        discussion: ["png", "jpg", "jpeg"],
+        document: ["pdf", "xls", "xlsx", "txt", "doc","pptx","docx","odt"],
+        map: ["shp", "geojson", "kml", "kmz", "gpkg", "gdb", "dwg", "dxf", "png", "jpg", "jpeg", "asc", "img", "tiff", "tif", "pbf", "wmts", "wms", "wfs", "qgz", "mxd", "aprx", "xls", "mbtiles", "svg"],
+        image: ["png", "jpg", "jpeg"]
+    };
+
+    // Don't allow empty post (no text & no file)
+    if (!text && !file) return;
+
+    // Validate file if present
+    if (file) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!allowedExtensions[type] || !allowedExtensions[type].includes(ext)) {
+            alert(`Invalid file type for ${type} post. Allowed: ${allowedExtensions[type].join(", ")}`);
+            return;
+        }
+    } else if (type !== "discussion" && type !== "image") {
+        // For document/map types, file is required
+        alert("You must attach a file for this post!");
+        return;
+    }
+
+    // Create post element
+    const ts = Date.now();
+    const post = document.createElement("div");
+    post.className = "post";
+    post.dataset.time = ts;
+    post.dataset.reactions = 0;
+    post.dataset.username = currentUsername;
+    post.dataset.email = currentEmail;
+
+    post.innerHTML = `
+        <div class="post-header">
+            <div>
+                <img src="${currentProfilePic || ''}">
+                <span>${currentUsername}</span>
+            </div>
+            <button onclick="deletePost(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 8px;border-radius:5px;cursor:pointer;">Delete</button>
+        </div>
+        <div class="post-content">${text}</div>
+        <div class="reactions">
+            <span onclick="react(this)">👍 <b>0</b></span>
+            <span onclick="react(this)">❤️ <b>0</b></span>
+            <span onclick="react(this)">😂 <b>0</b></span>
+            <span onclick="react(this)">😮 <b>0</b></span>
+            <span onclick="react(this)">😢 <b>0</b></span>
+        </div>
+        <div class="comments"></div>
+        <div class="comment-wrapper">
+            <input type="text" class="comment-input" placeholder="Write a comment...">
+            <button onclick="addComment(this)">Send</button>
+        </div>
+    `;
+
+    // Handle file if attached
+    if (file) {
+        const mediaDiv = post.querySelector(".post-content");
+
+        if (type === "image" || type === "discussion") {
+            const imgURL = URL.createObjectURL(file);
+            const tempImg = new Image();
+            tempImg.onload = function () {
+                const canvas = document.createElement("canvas");
+                canvas.width = 1080;
+                canvas.height = 720;
+                const ctx = canvas.getContext("2d");
+
+                const aspectRatio = tempImg.width / tempImg.height;
+                const targetRatio = 1080 / 720;
+                let sx = 0, sy = 0, sWidth = tempImg.width, sHeight = tempImg.height;
+
+                if (aspectRatio > targetRatio) {
+                    sWidth = tempImg.height * targetRatio;
+                    sx = (tempImg.width - sWidth) / 2;
+                } else {
+                    sHeight = tempImg.width / targetRatio;
+                    sy = (tempImg.height - sHeight) / 2;
+                }
+
+                ctx.drawImage(tempImg, sx, sy, sWidth, sHeight, 0, 0, 1080, 720);
+
+                const finalImgURL = canvas.toDataURL("image/png");
+                const img = document.createElement("img");
+                img.src = finalImgURL;
+                img.style.cursor = "pointer";
+                img.onclick = () => openImagePreview(finalImgURL);
+                mediaDiv.appendChild(img);
+
+                // Download button
+                const dlWrap = document.createElement("div");
+                dlWrap.className = "image-download-wrapper";
+                const btn = document.createElement("button");
+                btn.className = "download-btn";
+                btn.innerHTML = "⬇ Download image";
+                btn.onclick = () => {
+                    const a = document.createElement("a");
+                    a.href = finalImgURL;
+                    a.download = file.name;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+                dlWrap.appendChild(btn);
+                mediaDiv.appendChild(dlWrap);
+            };
+            tempImg.src = imgURL;
+        } else {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(file);
+            a.download = file.name;
+            a.textContent = file.name;
+            a.style.display = "block";
+            a.style.marginTop = "10px";
+            a.target = "_blank";
+            mediaDiv.appendChild(a);
+        }
+    }
+
+    // Append to correct container
+    const containers = { discussion: "discussions", map: "maps", document: "resources", image: "images" };
+    const container = document.getElementById(containers[type]);
+    if (!container) return alert("No container found for this post type.");
+    container.appendChild(post);
+
+     // NOTIFICATIONS APPEAR ON TOP
+    showNotification(containers[type], `${currentUsername} posted a new ${type}!`);
+
+
+    // Reset inputs
+    postText.value = "";
+    postFile.value = "";
+
+    addReadMoreIfNeeded(post, ".post-content");
+}
+
+
+ 
+
+// ======================= CREATE POLL =======================
+function createPoll() {
+    const question = prompt("Enter your poll question:");
+    if (!question) return alert("Poll question cannot be empty.");
+
+    const options = prompt("Enter options separated by commas (e.g., Yes,No,Maybe):");
+    if (!options) return alert("You must provide poll options.");
+
+    const optionArray = options.split(",").map(opt => opt.trim()).filter(opt => opt);
+    if(optionArray.length < 2) return alert("Provide at least two options.");
+
+    const ts = Date.now();
+    const post = document.createElement("div");
+    post.className = "post";
+    post.dataset.time = ts;
+    post.dataset.reactions = 0;
+    post.dataset.username = currentUsername;
+    post.dataset.email = currentEmail;
+
+    let pollHTML = `<div class="post-header">
+                        <div>
+                            <img src="${currentProfilePic || ''}">
+                            <span>${currentUsername}</span>
+                        </div>
+                        <button onclick="deletePost(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 8px;border-radius:5px;cursor:pointer;">Delete</button>
+                    </div>
+                    <div class="post-content"><b>Poll:</b> ${question}</div>
+                    <div class="poll-options">`;
+
+    optionArray.forEach(opt => {
+        pollHTML += `<button onclick="votePoll(this)" style="margin:3px;padding:5px 10px;border-radius:8px;background:#e8f5e9;border:none;cursor:pointer;">
+                        ${opt} <span class="vote-count">0</span>
+                     </button>`;
+    });
+
+    pollHTML += `</div>
+                 <div class="reactions">
+                     <span onclick="react(this)">👍 <b>0</b></span>
+                     <span onclick="react(this)">❤️ <b>0</b></span>
+                     <span onclick="react(this)">😂 <b>0</b></span>
+                     <span onclick="react(this)">😮 <b>0</b></span>
+                     <span onclick="react(this)">😢 <b>0</b></span>
+                 </div>`;
+
+    post.innerHTML = pollHTML;
+
+    // Append poll to discussions by default
+    const container = document.getElementById("discussions");
+    container.appendChild(post);
+
+    showNotification("discussions", `${currentUsername} created a new poll!`);
+}
+
+// ======================= VOTE ON POLL =======================
+function votePoll(btn){
+    const countSpan = btn.querySelector(".vote-count");
+    countSpan.innerText = parseInt(countSpan.innerText) + 1;
+
+    // Disable other options after vote
+    const buttons = btn.parentElement.querySelectorAll("button");
+    buttons.forEach(b => b.disabled = true);
+}
+
+
+
+
+
+
+
+
+// DELETE POST
+function deletePost(btn){ if(confirm("Delete this post?")) btn.closest(".post").remove(); }
+
+// ======================= COMMENTS & REPLIES =======================
+function addComment(btn){
+    const input=btn.previousElementSibling; const text=input.value.trim();
+    if(!text) return; const ts=Date.now();
+    const comment=document.createElement("div"); comment.className="comment"; comment.dataset.time=ts;
+    comment.dataset.username=currentUsername; comment.dataset.email=currentEmail;
+    comment.innerHTML=`
+        <div class="comment-header">
+            <div>
+                <img src="${currentProfilePic || ''}">
+                <span>${currentUsername}</span>
+            </div>
+            <button onclick="deleteComment(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 5px;border-radius:5px;cursor:pointer;font-size:11px;">X</button>
+        </div>
+        <div class="comment-text">${text}</div>
+        <div class="replies"></div>
+        <div class="reply-wrapper">
+            <input type="text" class="reply-input" placeholder="Reply...">
+            <button onclick="addReply(this)">Send</button>
+        </div>`;
+    btn.closest(".post").querySelector(".comments").appendChild(comment);
+    input.value="";
+}
+function deleteComment(btn){ btn.closest(".comment").remove(); }
+function addReply(btn){
+    const input=btn.previousElementSibling; const text=input.value.trim();
+    if(!text) return; const ts=Date.now();
+    const reply=document.createElement("div"); reply.className="reply"; reply.dataset.time=ts;
+    reply.dataset.username=currentUsername; reply.dataset.email=currentEmail;
+    reply.innerHTML=`
+        <div class="reply-header">
+            <div>
+                <img src="${currentProfilePic || ''}">
+                <span>${currentUsername}</span>
+            </div>
+            <button onclick="deleteReply(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 5px;border-radius:5px;cursor:pointer;font-size:11px;">X</button>
+        </div>
+        <div class="reply-text">${text}</div>`;
+    btn.closest(".comment").querySelector(".replies").appendChild(reply);
+    input.value="";
+}
+function deleteReply(btn){ btn.closest(".reply").remove(); }
+
+
+// ======================= REACTIONS =======================
+function react(span){
+    const post = span.closest(".post");
+    const reactionsContainer = span.closest(".reactions");
+    const allReactions = reactionsContainer.querySelectorAll("span");
+
+    // Previously selected reaction index (if any)
+    const prevIndex = post.dataset.userReactionIndex;
+    const currentIndex = Array.from(allReactions).indexOf(span);
+
+    // Helper to recalculate total reactions
+    const updateTotal = () => {
+        post.dataset.reactions = Array.from(allReactions)
+            .reduce((sum, r) => sum + parseInt(r.querySelector("b").innerText), 0);
+    };
+
+    // ===== UNDO (clicked same reaction again) =====
+    if (prevIndex !== undefined && parseInt(prevIndex) === currentIndex) {
+        const countEl = span.querySelector("b");
+        countEl.innerText = Math.max(0, parseInt(countEl.innerText) - 1);
+        span.classList.remove("active");
+        delete post.dataset.userReactionIndex;
+        updateTotal();
+        return;
+    }
+
+    // ===== SWITCH (remove previous reaction) =====
+    if (prevIndex !== undefined) {
+        const prevSpan = allReactions[prevIndex];
+        const prevCount = prevSpan.querySelector("b");
+        prevCount.innerText = Math.max(0, parseInt(prevCount.innerText) - 1);
+        prevSpan.classList.remove("active");
+    }
+
+    // ===== ADD NEW REACTION =====
+    const countEl = span.querySelector("b");
+    countEl.innerText = parseInt(countEl.innerText) + 1;
+    span.classList.add("active");
+    post.dataset.userReactionIndex = currentIndex;
+
+    updateTotal();
+}
+
+
+// ======================= TOOLTIP EMAIL ON USER CLICK (3s) =======================
+const tooltip = document.createElement("div");
+tooltip.style.position = "absolute";
+tooltip.style.background = "#2e7d32";
+tooltip.style.color = "#fff";
+tooltip.style.padding = "4px 8px";
+tooltip.style.borderRadius = "4px";
+tooltip.style.fontSize = "12px";
+tooltip.style.display = "none";
+tooltip.style.zIndex = "9999";
+document.body.appendChild(tooltip);
+
+let tooltipTimeout;
+
+document.addEventListener("click", function(e){
+    const targetSpan = e.target.closest(".post-header span, .comment-header span, .reply-header span");
+    if(targetSpan){
+        const parentDiv = targetSpan.closest(".post, .comment, .reply");
+        const email = parentDiv.dataset.email || "No email";
+
+        // Position tooltip above the username
+        const rect = targetSpan.getBoundingClientRect();
+        tooltip.style.top = Math.max(5, rect.top - 28 + window.scrollY) + "px";
+        tooltip.style.left = Math.max(5, rect.left + window.scrollX) + "px";
+        tooltip.innerText = email;
+        tooltip.style.display = "block";
+
+        // Auto-hide after 3 seconds
+        clearTimeout(tooltipTimeout);
+        tooltipTimeout = setTimeout(()=>tooltip.style.display="none", 3000);
+    } else {
+        tooltip.style.display = "none";
+        clearTimeout(tooltipTimeout);
+    }
+});
+
+
+// ======================= SORT POSTS =======================
+function sortPosts(){
+    const sort=document.getElementById("sortSelect").value;
+    const containers=["discussions","maps","resources","images"];
+    containers.forEach(id=>{
+        const container=document.getElementById(id);
+        Array.from(container.children).sort((a,b)=>{
+            if(sort==="latest") return b.dataset.time-a.dataset.time;
+            if(sort==="popular") return b.dataset.reactions-a.dataset.reactions;
+        }).forEach(el=>container.appendChild(el));
+    });
+}
+
+// ======================= SIDEBAR TOGGLE =======================
+function toggleSidebar(){
+    document.getElementById("sidebarMenu").classList.toggle("active");
+}
+
+/* ===== SCROLL SPY ===== */
+let scrollSpyEnabled=true;
+
+const sections=["discussions","maps","resources","images"];
+
+function highlightMenu(id){
+    menuLinks.forEach(l=>{
+        l.classList.toggle("active",l.getAttribute("href")==="#"+id);
+    });
+}
+
+window.addEventListener("scroll",()=>{
+    if(!scrollSpyEnabled) return;
+
+    for(const id of sections){
+        const el=document.getElementById(id);
+        const r=el.getBoundingClientRect();
+        if(r.top<=120 && r.bottom>120){
+            highlightMenu(id);
+            if(window.innerWidth<=1024){
+                sidebarMenu.classList.add("active");
+            }
+            break;
+        }
+    }
+});
+
+
+// ======================= MENU FILTER + CONTEXT CONTROL =======================
+const containers = ["discussions","maps","resources","images"];
+const postTypeSelect = document.getElementById("postType");
+const menuLinks=document.querySelectorAll(".menu a");
+const sectionMap = {
+    discussions: "discussion",
+    resources: "document",
+    maps: "map",
+    images: "image"
+};
+
+menuLinks.forEach(link=>{
+    link.addEventListener("click", function(e){
+        e.preventDefault();
+
+        // Active menu styling
+        menuLinks.forEach(l=>l.classList.remove("active"));
+        this.classList.add("active");
+
+        const section = this.getAttribute("href").substring(1);
+
+        if(section === "all"){
+            showAllPosts();
+            activeSection = "discussion";
+            postTypeSelect.value = "discussion";
+            postTypeSelect.disabled = false;
+        } else {
+            filterPosts(section);
+            activeSection = sectionMap[section];
+            postTypeSelect.value = activeSection;
+            postTypeSelect.disabled = true; // lock dropdown
+        }
+
+        // Close mobile menu
+        document.getElementById("sidebarMenu").classList.remove("active");
+    });
+});
+
+function filterPosts(type){
+    containers.forEach(id=>{
+        document.getElementById(id).style.display =
+            id === type ? "block" : "none";
+    });
+}
+
+
+
+
+function showAllPosts() {
+    const sectionIds = ["discussions","maps","resources","images"];
+    let allPosts = [];
+
+    // Collect all posts
+    sectionIds.forEach(id => {
+        const container = document.getElementById(id);
+        if(container) {
+            allPosts.push(...Array.from(container.children));
+        }
+    });
+
+    if(allPosts.length === 0) return; // nothing to show
+
+    const now = Date.now();
+    const oneHour = 60*60*1000;
+
+    // Convert dataset.time to number
+    allPosts.forEach(post => post.dataset.time = Number(post.dataset.time));
+
+    // Filter posts in last hour
+    let recentPosts = allPosts.filter(post => (now - post.dataset.time) <= oneHour);
+
+    // If none, use latest posts
+    if(recentPosts.length === 0) {
+        recentPosts = allPosts;
+    }
+
+    // Sort by latest
+    recentPosts.sort((a,b) => b.dataset.time - a.dataset.time);
+
+    // Take only first 20
+    const latestPosts = recentPosts.slice(0, 20);
+
+    // Hide all posts first
+    sectionIds.forEach(id => {
+        const container = document.getElementById(id);
+        if(container) {
+            Array.from(container.children).forEach(post => post.style.display="none");
+        }
+    });
+
+    // Show only selected posts and make their container visible
+    latestPosts.forEach(post => {
+        post.style.display = "block";
+        post.parentElement.style.display = "block";
+    });
+
+    // Remove active menu highlights
+    menuLinks.forEach(l => l.classList.remove("active"));
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+
+
+// ======================= SEARCH & HIGHLIGHT =======================
+function highlightText(element, query) {
+    if (!query) {
+        // Reset all highlights
+        element.querySelectorAll("mark").forEach(m => {
+            const parent = m.parentNode;
+            parent.replaceChild(document.createTextNode(m.innerText), m);
+            parent.normalize();
+        });
+        return;
+    }
+
+    const regex = new RegExp(`(${query})`, "gi");
+
+    function walk(node) {
+        if (node.nodeType === 3) { // text node
+            const match = node.textContent.match(regex);
+            if (match) {
+                const temp = document.createElement("span");
+                temp.innerHTML = node.textContent.replace(regex, "<mark style='background:#ffe58f'>$1</mark>");
+                node.replaceWith(...temp.childNodes);
+            }
+        } else if (node.nodeType === 1 && node.tagName !== "MARK") {
+            node.childNodes.forEach(walk);
+        }
+    }
+
+    walk(element);
+}
+
+document.getElementById("searchInput").addEventListener("input", function() {
+    const query = this.value.trim().toLowerCase();
+    const posts = document.querySelectorAll(".feed .post");
+
+    posts.forEach(post => {
+        let matched = false;
+
+        // Highlight post content
+        const contentDiv = post.querySelector(".post-content");
+        if (contentDiv.innerText.toLowerCase().includes(query)) {
+            highlightText(contentDiv, query);
+            matched = true;
+        } else {
+            highlightText(contentDiv, ""); // remove old highlights
+        }
+
+        // Highlight comments
+        post.querySelectorAll(".comment .comment-text").forEach(comment => {
+            if (comment.innerText.toLowerCase().includes(query)) {
+                highlightText(comment, query);
+                matched = true;
+            } else {
+                highlightText(comment, "");
+            }
+        });
+
+        // Highlight replies
+        post.querySelectorAll(".reply .reply-text").forEach(reply => {
+            if (reply.innerText.toLowerCase().includes(query)) {
+                highlightText(reply, query);
+                matched = true;
+            } else {
+                highlightText(reply, "");
+            }
+        });
+
+        // Show/hide post based on any match
+        post.style.display = matched || !query ? "" : "none";
+    });
+});
+
+
+
+</script>
+
+</body>
+</html>

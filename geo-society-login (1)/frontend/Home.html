@@ -138,10 +138,22 @@ h3{margin-bottom:10px;font-size:16px}
 .nav-left{display:flex;align-items:center;gap:8px}
 .nav-right{display:flex;align-items:center;gap:10px;}
 .logo{
-    width:36px;height:36px;border-radius:50%;
-    background:#fff;color:#2e7d32;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:bold;cursor:pointer;font-size:14px;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    overflow:hidden;
+}
+
+.logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
 }
 
 /* ===== SEARCH BOX WITH BUTTON ===== */
@@ -418,7 +430,9 @@ function downloadPreviewImage(){
 <!-- NAVBAR -->
 <div class="navbar">
     <div class="nav-left">
-        <div class="logo">GEO</div>
+        <div class="logo">
+            <img src="Geologo.jpg" alt="Geo Society Logo">
+        </div>
         <div class="search-box">
             <input id="searchInput" placeholder="Search...">
         </div>
@@ -1192,4 +1206,5 @@ document.getElementById("searchInput").addEventListener("input", function() {
 </script>
 
 </body>
+
 </html>

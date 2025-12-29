@@ -641,6 +641,13 @@ function createPost() {
     const file = postFile.files[0];
     const type = activeSection || postType.value;
 
+  // ===== IMAGE SECTION RULE =====
+    if (type === "image" && !file) {
+        showNotification("images", "Image posts require an image file. Please attach an image.");
+        return;
+    }
+  
+
     const allowedExtensions = {
         discussion: ["png", "jpg", "jpeg"],
         document: ["pdf", "xls", "xlsx", "txt", "doc","pptx","docx","odt"],
@@ -1208,3 +1215,4 @@ document.getElementById("searchInput").addEventListener("input", function() {
 </body>
 
 </html>
+

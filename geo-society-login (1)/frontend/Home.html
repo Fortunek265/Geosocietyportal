@@ -11,6 +11,44 @@ body{background:#f0f2f5;color:#333;}
 a{text-decoration:none;}
 h3{margin-bottom:10px;font-size:16px}
 
+/* ===== PHOTO POLL ===== */
+    .photo-poll {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.photo-option {
+    width: 90px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.photo-option img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    transition: 0.2s;
+}
+
+.photo-option:hover img {
+    border-color: #2e7d32;
+}
+
+.photo-name {
+    font-size: 13px;
+    margin-top: 4px;
+    font-weight: 600;
+}
+
+.photo-votes {
+    font-size: 12px;
+    color: #555;
+}
+
 /* ===== NOTIFICATION ===== */
 .notifications {
     padding: 8px 12px;
@@ -377,6 +415,20 @@ h3{margin-bottom:10px;font-size:16px}
 
 <body>
 
+    <!-- PHOTO POLL ⭐ -->
+<div id="photoPollModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:10000;">
+    <div style="background:#fff;padding:20px;border-radius:12px;width:300px;text-align:center;">
+        <h3>Create Photo Poll</h3>
+        <div id="photoPollStep">
+            <!-- Dynamic content goes here -->
+        </div>
+        <div style="margin-top:15px;">
+            <button onclick="nextPhotoPollStep()" style="background:#2e7d32;color:#fff;padding:6px 12px;border:none;border-radius:8px;">Next</button>
+            <button onclick="closePhotoPollModal()" style="background:#d32f2f;color:#fff;padding:6px 12px;border:none;border-radius:8px;">Cancel</button>
+        </div>
+    </div>
+</div>
+
 
     <!-- IMAGE PREVIEW MODAL ⭐ -->
 <div id="imagePreviewModal">
@@ -508,6 +560,7 @@ function downloadPreviewImage(){
 <div class="post-actions">
     <button onclick="createPost()">Post</button>
     <button onclick="createPoll()">Create Poll</button>
+    <button onclick="createPhotoPoll()">Create Photo Poll</button>
 </div>
 
                                  
@@ -550,6 +603,132 @@ Geo Society – University of Malawi © 2026
 </footer>
 
 <script>
+
+// ======================= PHOTO POLL MODAL FLOW =======================
+let photoPollData = { question: "", options: [] };
+let currentOptionIndex = 0;
+let totalOptions = 0;
+
+function createPhotoPoll() {
+    const question = prompt("Enter photo poll question:");
+    if (!question) return alert("Poll question cannot be empty.");
+
+    const optionCount = parseInt(prompt("How many candidates/photos? (2–6)"));
+    if (isNaN(optionCount) || optionCount < 2 || optionCount > 6) {
+        alert("Please choose between 2 and 6 options.");
+        return;
+    }
+
+    photoPollData = { question: question, options: [] };
+    currentOptionIndex = 0;
+    totalOptions = optionCount;
+
+    openPhotoPollModal();
+}
+
+function openPhotoPollModal() {
+    document.getElementById("photoPollModal").style.display = "flex";
+    renderPhotoPollStep();
+}
+
+function closePhotoPollModal() {
+    document.getElementById("photoPollModal").style.display = "none";
+}
+
+function renderPhotoPollStep() {
+    const stepDiv = document.getElementById("photoPollStep");
+    stepDiv.innerHTML = "";
+
+    if (currentOptionIndex < totalOptions) {
+        stepDiv.innerHTML = `
+            <label>Option ${currentOptionIndex + 1} Name:</label><br>
+            <input type="text" id="photoPollOptionName" style="width:90%;margin:8px 0;"><br>
+            <label>Choose Photo:</label><br>
+            <input type="file" id="photoPollOptionFile" accept="image/*">
+        `;
+    } else {
+        stepDiv.innerHTML = `<p>All options added! Click "Next" to post the poll.</p>`;
+    }
+}
+
+function nextPhotoPollStep() {
+    if (currentOptionIndex < totalOptions) {
+        const nameInput = document.getElementById("photoPollOptionName");
+        const fileInput = document.getElementById("photoPollOptionFile");
+        if (!nameInput.value.trim()) return alert("Option name required.");
+        if (!fileInput.files[0]) return alert("Option image required.");
+
+        const file = fileInput.files[0];
+        const imgURL = URL.createObjectURL(file);
+
+        photoPollData.options.push({ name: nameInput.value.trim(), imgURL: imgURL, votes: 0 });
+
+        currentOptionIndex++;
+        renderPhotoPollStep();
+    } else {
+        // All options done, build the poll
+        buildPhotoPoll(photoPollData.question, photoPollData.options);
+        closePhotoPollModal();
+    }
+}
+
+function buildPhotoPoll(question, options) {
+    const ts = Date.now();
+    const post = document.createElement("div");
+    post.className = "post";
+    post.dataset.time = ts;
+    post.dataset.reactions = 0;
+    post.dataset.voted = "false";
+
+    let optionsHTML = options.map((opt) => `
+        <div class="photo-option" onclick="votePhotoPoll(this)">
+            <img src="${opt.imgURL}">
+            <div class="photo-name">${opt.name}</div>
+            <div class="photo-votes">Votes: <span>0</span></div>
+        </div>
+    `).join("");
+
+    post.innerHTML = `
+        <div class="post-header">
+            <div>
+                <img src="${currentProfilePic || ''}">
+                <span>${currentUsername}</span>
+            </div>
+            <button onclick="deletePost(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 8px;border-radius:5px;">Delete</button>
+        </div>
+
+        <div class="post-content"><b>Photo Poll:</b> ${question}</div>
+        <div class="photo-poll">${optionsHTML}</div>
+
+        <div class="reactions">
+            <span onclick="react(this)">👍 <b>0</b></span>
+            <span onclick="react(this)">❤️ <b>0</b></span>
+            <span onclick="react(this)">😂 <b>0</b></span>
+            <span onclick="react(this)">😮 <b>0</b></span>
+            <span onclick="react(this)">😢 <b>0</b></span>
+        </div>
+    `;
+
+    document.getElementById("discussions").appendChild(post);
+    showNotification("discussions", `${currentUsername} created a photo poll!`);
+}
+
+function votePhotoPoll(optionDiv) {
+    const post = optionDiv.closest(".post");
+    if (post.dataset.voted === "true") return;
+
+    const countSpan = optionDiv.querySelector(".photo-votes span");
+    countSpan.innerText = parseInt(countSpan.innerText) + 1;
+
+    post.dataset.voted = "true";
+
+    post.querySelectorAll(".photo-option").forEach(opt => {
+        opt.style.opacity = "0.6";
+        opt.style.pointerEvents = "none";
+    });
+}
+
+    
 // ======================= USER & PROFILE SETTINGS =======================
 let currentUsername = "User";
 let currentProfilePic = "";
@@ -785,7 +964,6 @@ function createPost() {
 }
 
 
- 
 
 // ======================= CREATE POLL =======================
 function createPoll() {
@@ -840,6 +1018,66 @@ function createPoll() {
     showNotification("discussions", `${currentUsername} created a new poll!`);
 }
 
+
+// ======================= CREATE PHOTO POLL =======================
+
+function buildPhotoPoll(question, options) {
+    const ts = Date.now();
+    const post = document.createElement("div");
+    post.className = "post";
+    post.dataset.time = ts;
+    post.dataset.reactions = 0;
+    post.dataset.voted = "false";
+
+    let optionsHTML = options.map((opt, i) => `
+        <div class="photo-option" onclick="votePhotoPoll(this)">
+            <img src="${opt.imgURL}">
+            <div class="photo-name">${opt.name}</div>
+            <div class="photo-votes">Votes: <span>0</span></div>
+        </div>
+    `).join("");
+
+    post.innerHTML = `
+        <div class="post-header">
+            <div>
+                <img src="${currentProfilePic || ''}">
+                <span>${currentUsername}</span>
+            </div>
+            <button onclick="deletePost(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 8px;border-radius:5px;">Delete</button>
+        </div>
+
+        <div class="post-content"><b>Photo Poll:</b> ${question}</div>
+        <div class="photo-poll">${optionsHTML}</div>
+
+        <div class="reactions">
+            <span onclick="react(this)">👍 <b>0</b></span>
+            <span onclick="react(this)">❤️ <b>0</b></span>
+            <span onclick="react(this)">😂 <b>0</b></span>
+            <span onclick="react(this)">😮 <b>0</b></span>
+            <span onclick="react(this)">😢 <b>0</b></span>
+        </div>
+    `;
+
+    document.getElementById("discussions").appendChild(post);
+    showNotification("discussions", `${currentUsername} created a photo poll!`);
+}
+function votePhotoPoll(optionDiv) {
+    const post = optionDiv.closest(".post");
+    if (post.dataset.voted === "true") return;
+
+    const countSpan = optionDiv.querySelector(".photo-votes span");
+    countSpan.innerText = parseInt(countSpan.innerText) + 1;
+
+    post.dataset.voted = "true";
+
+    // Disable all options visually
+    post.querySelectorAll(".photo-option").forEach(opt => {
+        opt.style.opacity = "0.6";
+        opt.style.pointerEvents = "none";
+    });
+}
+    
+
 // ======================= VOTE ON POLL =======================
 function votePoll(btn){
     const countSpan = btn.querySelector(".vote-count");
@@ -849,11 +1087,6 @@ function votePoll(btn){
     const buttons = btn.parentElement.querySelectorAll("button");
     buttons.forEach(b => b.disabled = true);
 }
-
-
-
-
-
 
 
 
@@ -1135,8 +1368,6 @@ function showAllPosts() {
 }
 
 
-
-
 // ======================= SEARCH & HIGHLIGHT =======================
 function highlightText(element, query) {
     if (!query) {
@@ -1215,4 +1446,5 @@ document.getElementById("searchInput").addEventListener("input", function() {
 </body>
 
 </html>
+
 

@@ -604,12 +604,24 @@ Geo Society – University of Malawi © 2026
 
 <script>
 
+    
+
+
 // ======================= PHOTO POLL MODAL FLOW =======================
 let photoPollData = { question: "", options: [] };
 let currentOptionIndex = 0;
 let totalOptions = 0;
 
+// ======================= EXECUTIVE PASSWORD =======================
+const EXECUTIVE_PASSWORD = "GeoExec2026"; // Executive password
+
 function createPhotoPoll() {
+    const pwd = prompt("Enter Executive password to create a photo poll:");
+    if (pwd !== EXECUTIVE_PASSWORD) {
+        alert("Incorrect password! Only executives can create a photo poll.");
+        return;
+    }
+
     const question = prompt("Enter photo poll question:");
     if (!question) return alert("Poll question cannot be empty.");
 
@@ -625,6 +637,7 @@ function createPhotoPoll() {
 
     openPhotoPollModal();
 }
+
 
 function openPhotoPollModal() {
     document.getElementById("photoPollModal").style.display = "flex";
@@ -670,7 +683,7 @@ function nextPhotoPollStep() {
         buildPhotoPoll(photoPollData.question, photoPollData.options);
         closePhotoPollModal();
     }
-}
+
 
 function buildPhotoPoll(question, options) {
     const ts = Date.now();
@@ -726,6 +739,8 @@ function votePhotoPoll(optionDiv) {
         opt.style.opacity = "0.6";
         opt.style.pointerEvents = "none";
     });
+}
+
 }
 
     
@@ -964,6 +979,7 @@ function createPost() {
 }
 
 
+ 
 
 // ======================= CREATE POLL =======================
 function createPoll() {
@@ -1020,7 +1036,6 @@ function createPoll() {
 
 
 // ======================= CREATE PHOTO POLL =======================
-
 function buildPhotoPoll(question, options) {
     const ts = Date.now();
     const post = document.createElement("div");
@@ -1087,6 +1102,11 @@ function votePoll(btn){
     const buttons = btn.parentElement.querySelectorAll("button");
     buttons.forEach(b => b.disabled = true);
 }
+
+
+
+
+
 
 
 
@@ -1366,6 +1386,8 @@ function showAllPosts() {
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+
 
 
 // ======================= SEARCH & HIGHLIGHT =======================

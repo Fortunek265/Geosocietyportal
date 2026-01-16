@@ -1,1472 +1,2312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Geo Society | Home</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Geo Society</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1b5e20;
+            --primary-light: #4caf50;
+            --primary-dark: #003300;
+            --secondary: #00695c;
+            --accent: #ff9800;
+            --light: #f5f7fa;
+            --gray: #78909c;
+            --dark: #263238;
+            --danger: #d32f2f;
+            --success: #388e3c;
+            --warning: #f57c00;
+            --border-radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Arial,sans-serif;}
-body{background:#f0f2f5;color:#333;}
-a{text-decoration:none;}
-h3{margin-bottom:10px;font-size:16px}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* ===== PHOTO POLL ===== */
-    .photo-poll {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-.photo-option {
-    width: 90px;
-    text-align: center;
-    cursor: pointer;
-}
+        /* Sticky Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 0.8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
 
-.photo-option img {
-    width: 80px;
-    height: 80px;
-    border-radius: 8px;
-    object-fit: cover;
-    border: 2px solid #e0e0e0;
-    transition: 0.2s;
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.photo-option:hover img {
-    border-color: #2e7d32;
-}
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+        }
 
-.photo-name {
-    font-size: 13px;
-    margin-top: 4px;
-    font-weight: 600;
-}
+        .logo-text h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-.photo-votes {
-    font-size: 12px;
-    color: #555;
-}
+        .logo-text span {
+            font-size: 0.8rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
 
-/* ===== NOTIFICATION ===== */
-.notifications {
-    padding: 8px 12px;
-    background: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeeba;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: none; /* hidden by default */
-    font-size: 13px;
-}
+        .search-container {
+            flex: 0 1 500px;
+            position: relative;
+        }
 
-/* ===== MENU ACTIVE ===== */
-.menu a.active{
-    background:#2e7d32;
-    color:#fff;
-    font-weight:600;
-}
+        .search-bar {
+            width: 100%;
+            padding: 0.8rem 1.5rem 0.8rem 3rem;
+            border: 2px solid transparent;
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.04);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
 
-/* ===== IMAGE DOWNLOAD BUTTON ===== */
-.image-download-wrapper{
-    display:flex;
-    justify-content:flex-end;
-    margin-top:8px;
-}
-.download-btn{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    background:linear-gradient(90deg,#2e7d32,#1b5e20);
-    color:#fff;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:13px;
-    cursor:pointer;
-    border:none;
-    transition:0.3s;
-    box-shadow:0 4px 10px rgba(0,0,0,.15);
-}
-.download-btn:hover{
-    transform:translateY(-1px);
-}
+        .search-bar:focus {
+            outline: none;
+            background: white;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
 
-/* ===== IMAGE PREVIEW MODAL ===== */
-#imagePreviewModal{
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.85);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:99999;
-}
-.preview-box{
-    position:relative;
-    background:#111;
-    padding:12px;
-    border-radius:12px;
-    text-align:center;
-    max-width:90%;
-    max-height:90%;
-}
-.preview-image-container{
-    position:relative;
-    display:inline-block;
-}
-.preview-image-container img{
-    max-width:100%;
-    max-height:70vh;
-    border-radius:10px;
-    transition:.3s;
-    display:block;
-}
-.preview-actions{
-    position:absolute;
-    bottom:10px;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    background:rgba(0,0,0,0.5);
-    padding:6px 12px;
-    border-radius:20px;
-}
-.preview-actions button{
-    background:#2e7d32;
-    color:#fff;
-    border:none;
-    padding:6px 12px;
-    border-radius:20px;
-    cursor:pointer;
-}
-.preview-close{
-    position:fixed;
-    top:15px;
-    right:20px;
-    background:#d32f2f;
-    color:#fff;
-    border:none;
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    cursor:pointer;
-    font-size:18px;
-    z-index:100001;
-    pointer-events:auto;
-}
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
 
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
 
+        .notifications {
+            position: relative;
+            cursor: pointer;
+        }
 
-/* ===== NAVBAR ===== */
-.navbar{
-    background:linear-gradient(90deg,#2e7d32,#1b5e20);
-    color:#fff;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:8px 12px;
-    position:sticky;
-    top:0;
-    z-index:100;
-}
-.nav-left{display:flex;align-items:center;gap:8px}
-.nav-right{display:flex;align-items:center;gap:10px;}
-.logo{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    background:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    overflow:hidden;
-}
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.logo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    border-radius:50%;
-}
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
 
-/* ===== SEARCH BOX WITH BUTTON ===== */
-.search-box{
-    display:flex;
-    align-items:center;
-    gap:5px;
-}
-.search-box input{
-    padding:6px 12px;border-radius:20px;border:none;width:180px;font-size:14px;
-}
-.search-box button{
-    background:#fff;border:none;padding:6px 10px;border-radius:20px;
-    cursor:pointer;font-size:14px;color:#2e7d32;
-    transition:0.3s;
-}
-.search-box button:hover{
-    background:#e8f5e9;
-}
+        .user-profile:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
 
-/* ===== PROFILE BUTTON ===== */
-.profile-btn{
-    background:#1b5e20;padding:4px 12px;border-radius:25px;cursor:pointer;color:#fff;position:relative;
-    display:flex;align-items:center;gap:5px;font-size:14px;
-}
-.profile-btn img{
-    width:30px;height:30px;border-radius:50%;
-}
-.profile-dropdown{
-    display:none;
-    position:absolute;
-    top:40px;
-    right:0;
-    background:#fff;color:#333;
-    min-width:120px;
-    border-radius:8px;
-    box-shadow:0 4px 12px rgba(0,0,0,.2);
-    overflow:hidden;
-}
-.profile-dropdown a{
-    display:block;padding:8px;
-    cursor:pointer;font-size:14px;
-}
-.profile-dropdown a:hover{background:#e8f5e9}
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-light);
+        }
 
-/* ===== MAIN ===== */
-.main{
-    display:grid;
-    grid-template-columns:260px 1fr 300px;
-    gap:15px;
-    max-width:1300px;
-    margin:15px auto;
-    padding:0 12px;
-}
-.sidebar,.rightbar{
-    background:#fff;border-radius:12px;padding:15px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-}
-.menu a{
-    display:block;padding:8px;border-radius:8px;
-    margin-bottom:5px;color:#333;font-size:14px;
-}
-.menu a:hover{background:#e8f5e9}
+        .user-info h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
 
-/* ===== COLLAPSIBLE MENU BUTTON ===== */
-#menuToggle{
-    display:none;
-    background:#2e7d32;color:#fff;padding:6px 12px;border:none;border-radius:20px;
-    cursor:pointer;font-size:14px;
-}
+        .user-info span {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
 
-/* ===== FEED ===== */
-.feed{display:flex;flex-direction:column;gap:15px}
-.post-box,.post{
-    background:#fff;padding:15px;border-radius:12px;
-    box-shadow:0 6px 12px rgba(0,0,0,.08);
-}
-.post-box textarea{
-    width:100%;border:none;padding:8px;
-    border-radius:10px;background:#f5f7f5;font-size:14px;
-}
-.post-actions{display:flex;justify-content:space-between;margin-top:8px}
-.post-actions button{
-    background:#2e7d32;color:#fff;
-    border:none;padding:6px 14px;border-radius:20px;font-size:14px;
-}
-.post-header{font-weight:700;color:#2e7d32;display:flex;align-items:center;gap:8px;justify-content:space-between;font-size:14px;}
-.post-header img{width:32px;height:32px;border-radius:50%;}
-.post-content{margin:8px 0;font-size:14px}
-.post-content img{max-width:100%;border-radius:10px;margin-top:8px;font-size:14px}
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 250px;
+            padding: 1rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+        }
 
-/* ===== REACTIONS ===== */
-.reactions{
-    display:flex;
-    gap:8px;
-    margin-top:5px;font-size:13px;
-}
-.reactions span{
-    cursor:pointer;
-    padding:3px 6px;
-    border-radius:20px;
-    background:#f0f2f5;
-    font-size:12px;
-    transition:0.3s;
-}
-.reactions span:hover{background:#e8f5e9}
-.reactions span.active{
-    background:#2e7d32;
-    color:#fff;
-}
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
 
-/* ===== COMMENTS & REPLIES ===== */
-.comment-input,.reply-input{
-    width:calc(100% - 50px);
-    padding:6px 8px;
-    border-radius:8px;
-    border:1px solid #ccc;font-size:13px;
-}
-.comment-wrapper,.reply-wrapper{
-    display:flex;
-    gap:5px;
-    margin-top:5px
-}
-.comments,.replies{margin-top:8px}
-.comment,.reply{
-    background:#f0f2f5;
-    padding:5px 8px;
-    border-radius:8px;
-    margin-bottom:5px;font-size:13px;
-}
-.comment-header,.reply-header{
-    display:flex;
-    align-items:center;
-    gap:5px;
-    font-size:12px;
-    margin-bottom:2px;
-    justify-content:space-between;
-}
-.comment-header img,.reply-header img{width:24px;height:24px;border-radius:50%;}
-.comment-text,.reply-text{margin-left:28px;font-size:13px;}
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            color: var(--dark);
+            transition: var(--transition);
+        }
 
-/* ===== READ MORE / LESS ===== */
-.collapsed {
-    display: -webkit-box;
-    -webkit-line-clamp: 6;
-    line-clamp: 6;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    cursor: pointer;
-}
-.collapsed.expanded {
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-    overflow: visible;
-}
+        .dropdown-item:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
 
-/* ===== PROFILE MODAL ===== */
-#profileModal{
-    display:none;
-    position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
-    background:rgba(0,0,0,0.5);
-    justify-content:center;align-items:center;
-}
-#profileModal .modal-content{
-    background:#fff;padding:20px;border-radius:12px;width:280px;position:relative;
-}
-#profileModal .modal-content span.close{
-    position:absolute;top:10px;right:15px;cursor:pointer;font-weight:bold;
-}
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 0.5rem 0;
+        }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:1024px){
-    .main{
-        grid-template-columns:1fr;
-        gap:10px;
-    }
-    .sidebar{
-        width:100%;
-        order:-1;
-        margin-bottom:10px;
-        display:none;
-    }
-    .rightbar{display:none;}
-    #menuToggle{display:block;}
-    #sidebarMenu{
-        display:none;
-        width:100%;
-        background:#fff;
-        border-radius:12px;
-        padding:10px;
-        box-shadow:0 4px 12px rgba(0,0,0,.15);
-        position:fixed;
-        top:60px;
-        left:0;
-        z-index:99;
-        flex-wrap:wrap;
-        justify-content:center;
-    }
-    #sidebarMenu.active{display:flex;}
-    #sidebarMenu .menu{
-        display:flex;
-        gap:10px;
-        flex-wrap:wrap;
-        justify-content:center;
-    }
-    #sidebarMenu .menu a{
-        padding:6px 12px;
-        border-radius:20px;
-        margin:4px 0;
-        background:#e8f5e9;
-        transition:0.3s;
-    }
-    #sidebarMenu .menu a:hover{
-        background:#c8e6c9;
-    }
-}
-</style>
+        /* Main Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            flex: 0 0 250px;
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .menu-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.9rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--dark);
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.1), rgba(0, 105, 92, 0.1));
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        .menu-item.active i, .menu-item:hover i {
+            color: var(--primary);
+        }
+
+        .badge {
+            margin-left: auto;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.3;
+        }
+
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .post-creator {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .post-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        .post-tab {
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.04);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .post-tab:hover, .post-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .post-form {
+            display: none;
+        }
+
+        .post-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .post-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(0, 0, 0, 0.08);
+            border-radius: 10px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+
+        .post-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .file-upload {
+            border: 2px dashed rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-light);
+            background: rgba(76, 175, 80, 0.02);
+        }
+
+        .file-upload i {
+            font-size: 2.5rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-file {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .poll-option {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .poll-option input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .add-option {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.4rem 0.8rem;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .post-btn {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .post-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(27, 94, 32, 0.3);
+        }
+
+        .post-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Posts Feed */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .sort-select {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            background: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+            border: 3px solid var(--primary-light);
+        }
+
+        .post-meta h4 {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .post-meta span {
+            font-size: 0.85rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .post-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(27, 94, 32, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .post-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .post-content p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .post-image:hover {
+            transform: scale(1.02);
+        }
+
+        .post-poll {
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .poll-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .poll-option-item {
+            padding: 0.8rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .poll-option-item:hover {
+            border-color: var(--primary-light);
+        }
+
+        .poll-option-item.voted {
+            background: rgba(27, 94, 32, 0.05);
+            border-color: var(--primary);
+        }
+
+        .poll-bar {
+            height: 6px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .poll-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        .poll-percentage {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .post-actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--primary);
+        }
+
+        .action-btn.active {
+            color: var(--primary);
+        }
+
+        .comments-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .comments-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .comment {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.02);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .comment-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .comment-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .comment-reply {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .reply-form {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .reply-form.show {
+            display: block;
+        }
+
+        .reply-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 60px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .nested-comments {
+            margin-left: 2rem;
+            margin-top: 1rem;
+            border-left: 2px solid rgba(0, 0, 0, 0.05);
+            padding-left: 1rem;
+        }
+
+        .add-comment {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .comment-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        /* Right Panel */
+        .right-panel {
+            flex: 0 0 300px;
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .events-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .event-item {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.05), rgba(0, 105, 92, 0.05));
+            border-left: 4px solid var(--primary);
+        }
+
+        .event-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-location {
+            font-size: 0.85rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .online-members {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .member {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            border-radius: 10px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .member:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .member-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--success);
+            position: relative;
+        }
+
+        .member-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .member-info h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .member-info span {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .image-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 10px;
+            cursor: zoom-in;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .modal-download {
+            position: absolute;
+            bottom: -50px;
+            right: 0;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Notifications */
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 350px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 1001;
+        }
+
+        .notification-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+
+        .notification-header {
+            padding: 0 1.5rem 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+        }
+
+        .notification-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-item:hover {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .notification-item.unread {
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notification-icon.like {
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+        }
+
+        .notification-icon.comment {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+        }
+
+        .notification-icon.share {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196f3;
+        }
+
+        .notification-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 0.3rem;
+        }
+
+        /* Search Highlight */
+        .highlight {
+            background: yellow;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                flex-wrap: wrap;
+            }
+            
+            .sidebar, .right-panel {
+                flex: 1;
+                position: static;
+                height: auto;
+            }
+            
+            .main-content {
+                flex: 100%;
+                order: 3;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.8rem 1rem;
+            }
+            
+            .dashboard-container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
+            
+            .search-container {
+                display: none;
+            }
+            
+            .post-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .feed-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .filter-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .post-actions-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info {
+                display: none;
+            }
+            
+            .welcome-banner {
+                padding: 1.5rem;
+            }
+            
+            .post-creator {
+                padding: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(27, 94, 32, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(27, 94, 32, 0.5);
+        }
+    </style>
 </head>
-
 <body>
-
-    <!-- PHOTO POLL ⭐ -->
-<div id="photoPollModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:10000;">
-    <div style="background:#fff;padding:20px;border-radius:12px;width:300px;text-align:center;">
-        <h3>Create Photo Poll</h3>
-        <div id="photoPollStep">
-            <!-- Dynamic content goes here -->
-        </div>
-        <div style="margin-top:15px;">
-            <button onclick="nextPhotoPollStep()" style="background:#2e7d32;color:#fff;padding:6px 12px;border:none;border-radius:8px;">Next</button>
-            <button onclick="closePhotoPollModal()" style="background:#d32f2f;color:#fff;padding:6px 12px;border:none;border-radius:8px;">Cancel</button>
-        </div>
-    </div>
-</div>
-
-
-    <!-- IMAGE PREVIEW MODAL ⭐ -->
-<div id="imagePreviewModal">
-    <div class="preview-box">
-        <button class="preview-close" onclick="closeImagePreview()">✕</button>
-        <div class="preview-image-container">
-            <img id="previewImage">
-            <div class="preview-actions">
-                <button onclick="zoomImage(1)">➕ Zoom</button>
-                <button onclick="zoomImage(-1)">➖ Zoom</button>
-                <button onclick="downloadPreviewImage()">⬇ Download</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<script>
-// ======================= IMAGE MODAL LOGIC =======================
-let previewScale = 1;
-let previewSrc = "";
-
-function openImagePreview(src){
-    previewScale = 1;
-    previewSrc = src;
-    const img = document.getElementById("previewImage");
-    img.src = src;
-    img.style.transform = "scale(1)";
-    document.getElementById("imagePreviewModal").style.display = "flex";
-}
-function closeImagePreview(){
-    document.getElementById("imagePreviewModal").style.display = "none";
-}
-function zoomImage(dir){
-    previewScale += dir*0.2;
-    previewScale = Math.max(0.6, Math.min(3, previewScale));
-    document.getElementById("previewImage").style.transform = `scale(${previewScale})`;
-}
-function downloadPreviewImage(){
-    const a = document.createElement("a");
-    a.href = previewSrc;
-    a.download = "image";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
-</script>
-
-
-
-<!-- NAVBAR -->
-<div class="navbar">
-    <div class="nav-left">
+    <!-- Sticky Navigation -->
+    <nav class="navbar">
         <div class="logo">
-            <img src="Geologo.jpg" alt="Geo Society Logo">
-        </div>
-        <div class="search-box">
-            <input id="searchInput" placeholder="Search...">
-        </div>
-    </div>
-    <div class="nav-right">
-        <button id="menuToggle" onclick="toggleSidebar()">☰</button>
-        <div class="profile-btn" onclick="toggleDropdown()">
-            <img id="navbarProfilePic" src="">
-            <span id="navbarUsername">User ▼</span>
-            <div class="profile-dropdown" id="profileDropdown">
-                <a onclick="openProfile()">Settings</a>
-                <a onclick="logout()">Logout</a>
+            <div class="logo-icon">GS</div>
+            <div class="logo-text">
+                <h1>Geo Society</h1>
+                <span>University of Malawi</span>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Profile Modal -->
-<div id="profileModal">
-    <div class="modal-content">
-        <span class="close" onclick="closeProfile()">X</span>
-        <h3>Settings</h3>
-        <div style="margin:10px 0;">
-            <label>Profile Picture:</label><br>
-            <input type="file" id="profilePicInput">
-            <img id="profilePicPreview" src="" style="width:60px;height:60px;border-radius:50%;margin-top:5px;">
+        
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search discussions, members, maps...">
         </div>
-        <div style="margin:10px 0;">
-            <label>Username:</label><br>
-            <input type="text" id="profileUsername" style="width:100%;padding:5px;">
-        </div>
-        <div style="margin-top:15px;display:flex;justify-content:space-between;">
-            <button onclick="saveProfile()" style="background:#2e7d32;color:#fff;padding:7px 15px;border:none;border-radius:8px;">Save</button>
-            <button onclick="logout()" style="background:#d32f2f;color:#fff;padding:7px 15px;border:none;border-radius:8px;">Logout</button>
-        </div>
-    </div>
-</div>
-
-<div class="main">
-
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebarMenu">
-    <h3>Menu</h3>
-    <div class="menu">
-        <a href="#resources">Resources</a>
-        <a href="#discussions">Discussions</a>
-        <a href="#maps">Maps & GIS</a>
-        <a href="#images">Images</a>
-        <a href="#all">All</a>
-    </div>
-</div>
-
-<!-- FEED -->
-<div class="feed">
-
-<div class="sort-bar">
-    <strong>Sort Posts:</strong>
-    <select id="sortSelect" onchange="sortPosts()">
-        <option value="latest">Latest</option>
-        <option value="popular">Most Reacted</option>
-    </select>
-</div>
-
-<div class="post-box">
-    <textarea id="postText" rows="2" placeholder="Write something..."></textarea>
-    <input type="file" id="postFile">
-    <select id="postType">
-        <option value="discussion">Discussion</option>
-        <option value="map">Map</option>
-        <option value="document">Document</option>
-        <option value="image">Image</option>
-    </select>
-<div class="post-actions">
-    <button onclick="createPost()">Post</button>
-    <button onclick="createPoll()">Create Poll</button>
-    <button onclick="createPhotoPoll()">Create Photo Poll</button>
-</div>
-
-                                 
-
-    
-
-<div id="discussions" class="section">
-    <div class="notifications"></div>
-    <div class="posts"></div>
-</div>
-
-<div id="maps" class="section">
-    <div class="notifications"></div>
-    <div class="posts"></div>
-</div>
-
-<div id="resources" class="section">
-    <div class="notifications"></div>
-    <div class="posts"></div>
-</div>
-
-<div id="images" class="section">
-    <div class="notifications"></div>
-    <div class="posts"></div>
-</div>
-
- 
-</div>
-<!-- ALL POSTS BUTTON (rightbar) -->
-<div class="rightbar" id="allPostsButton">
-    <button onclick="showAllPosts()" style="width:100%;padding:10px;border:none;border-radius:12px;background:#2e7d32;color:#fff;font-size:14px;cursor:pointer;">
-        Show All Posts
-    </button>
-</div>
-
-</div>
-
-<footer style="text-align:center;margin:20px 0;color:#777">
-Geo Society – University of Malawi © 2026
-</footer>
-
-<script>
-
-    
-
-
-// ======================= PHOTO POLL MODAL FLOW =======================
-let photoPollData = { question: "", options: [] };
-let currentOptionIndex = 0;
-let totalOptions = 0;
-
-// ======================= EXECUTIVE PASSWORD =======================
-const EXECUTIVE_PASSWORD = "GeoExec2026"; // Executive password
-
-function createPhotoPoll() {
-    const pwd = prompt("Enter Executive password to create a photo poll:");
-    if (pwd !== EXECUTIVE_PASSWORD) {
-        alert("Incorrect password! Only executives can create a photo poll.");
-        return;
-    }
-
-    const question = prompt("Enter photo poll question:");
-    if (!question) return alert("Poll question cannot be empty.");
-
-    const optionCount = parseInt(prompt("How many candidates/photos? (2–6)"));
-    if (isNaN(optionCount) || optionCount < 2 || optionCount > 6) {
-        alert("Please choose between 2 and 6 options.");
-        return;
-    }
-
-    photoPollData = { question: question, options: [] };
-    currentOptionIndex = 0;
-    totalOptions = optionCount;
-
-    openPhotoPollModal();
-}
-
-
-function openPhotoPollModal() {
-    document.getElementById("photoPollModal").style.display = "flex";
-    renderPhotoPollStep();
-}
-
-function closePhotoPollModal() {
-    document.getElementById("photoPollModal").style.display = "none";
-}
-
-function renderPhotoPollStep() {
-    const stepDiv = document.getElementById("photoPollStep");
-    stepDiv.innerHTML = "";
-
-    if (currentOptionIndex < totalOptions) {
-        stepDiv.innerHTML = `
-            <label>Option ${currentOptionIndex + 1} Name:</label><br>
-            <input type="text" id="photoPollOptionName" style="width:90%;margin:8px 0;"><br>
-            <label>Choose Photo:</label><br>
-            <input type="file" id="photoPollOptionFile" accept="image/*">
-        `;
-    } else {
-        stepDiv.innerHTML = `<p>All options added! Click "Next" to post the poll.</p>`;
-    }
-}
-
-function nextPhotoPollStep() {
-    if (currentOptionIndex < totalOptions) {
-        const nameInput = document.getElementById("photoPollOptionName");
-        const fileInput = document.getElementById("photoPollOptionFile");
-        if (!nameInput.value.trim()) return alert("Option name required.");
-        if (!fileInput.files[0]) return alert("Option image required.");
-
-        const file = fileInput.files[0];
-        const imgURL = URL.createObjectURL(file);
-
-        photoPollData.options.push({ name: nameInput.value.trim(), imgURL: imgURL, votes: 0 });
-
-        currentOptionIndex++;
-        renderPhotoPollStep();
-    } else {
-        // All options done, build the poll
-        buildPhotoPoll(photoPollData.question, photoPollData.options);
-        closePhotoPollModal();
-    }
-
-
-function buildPhotoPoll(question, options) {
-    const ts = Date.now();
-    const post = document.createElement("div");
-    post.className = "post";
-    post.dataset.time = ts;
-    post.dataset.reactions = 0;
-    post.dataset.voted = "false";
-
-    let optionsHTML = options.map((opt) => `
-        <div class="photo-option" onclick="votePhotoPoll(this)">
-            <img src="${opt.imgURL}">
-            <div class="photo-name">${opt.name}</div>
-            <div class="photo-votes">Votes: <span>0</span></div>
-        </div>
-    `).join("");
-
-    post.innerHTML = `
-        <div class="post-header">
-            <div>
-                <img src="${currentProfilePic || ''}">
-                <span>${currentUsername}</span>
-            </div>
-            <button onclick="deletePost(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 8px;border-radius:5px;">Delete</button>
-        </div>
-
-        <div class="post-content"><b>Photo Poll:</b> ${question}</div>
-        <div class="photo-poll">${optionsHTML}</div>
-
-        <div class="reactions">
-            <span onclick="react(this)">👍 <b>0</b></span>
-            <span onclick="react(this)">❤️ <b>0</b></span>
-            <span onclick="react(this)">😂 <b>0</b></span>
-            <span onclick="react(this)">😮 <b>0</b></span>
-            <span onclick="react(this)">😢 <b>0</b></span>
-        </div>
-    `;
-
-    document.getElementById("discussions").appendChild(post);
-    showNotification("discussions", `${currentUsername} created a photo poll!`);
-}
-
-function votePhotoPoll(optionDiv) {
-    const post = optionDiv.closest(".post");
-    if (post.dataset.voted === "true") return;
-
-    const countSpan = optionDiv.querySelector(".photo-votes span");
-    countSpan.innerText = parseInt(countSpan.innerText) + 1;
-
-    post.dataset.voted = "true";
-
-    post.querySelectorAll(".photo-option").forEach(opt => {
-        opt.style.opacity = "0.6";
-        opt.style.pointerEvents = "none";
-    });
-}
-
-}
-
-    
-// ======================= USER & PROFILE SETTINGS =======================
-let currentUsername = "User";
-let currentProfilePic = "";
-let currentEmail = "user@example.com"; // <-- email used at signup/login, never changes
-
-// Predefined other users for demo
-const userEmails = {
-    "Alice": "alice@example.com",
-    "Bob": "bob@example.com"
-};
-
-function toggleDropdown(){
-    const dd = document.getElementById("profileDropdown");
-    dd.style.display = dd.style.display==="block"?"none":"block";
-}
-function openProfile(){
-    document.getElementById("profileModal").style.display="flex";
-    document.getElementById("profileUsername").value = currentUsername;
-    document.getElementById("profilePicPreview").src = currentProfilePic || "";
-}
-function closeProfile(){ document.getElementById("profileModal").style.display="none"; }
-document.getElementById("profilePicInput").addEventListener("change", function(){
-    const file = this.files[0];
-    if(file){
-        currentProfilePic = URL.createObjectURL(file);
-        document.getElementById("profilePicPreview").src = currentProfilePic;
-        document.getElementById("navbarProfilePic").src = currentProfilePic;
-    }
-});
-function saveProfile(){
-    currentUsername = document.getElementById("profileUsername").value.trim() || "User";
-    document.getElementById("navbarUsername").innerText = `${currentUsername} ▼`;
-    closeProfile();
-}
-function logout(){ window.location.href = "index.html"; }
-
-// ======================= READ MORE / LESS =======================
-function addReadMoreIfNeeded(containerSelector, textSelector){
-    const elements = containerSelector.querySelectorAll(textSelector);
-    elements.forEach(el=>{
-        const lineHeight = parseInt(window.getComputedStyle(el).lineHeight);
-        const maxHeight = lineHeight*6;
-        if(el.scrollHeight > maxHeight){
-            el.classList.add("collapsed");
-            if(!el.nextElementSibling || !el.nextElementSibling.classList.contains("read-more-comment")){
-                const readMore = document.createElement("span");
-                readMore.className = "read-more-comment";
-                readMore.innerText = "Read more";
-                readMore.style.color="#2e7d32"; readMore.style.cursor="pointer"; readMore.style.fontSize="12px";
-                el.insertAdjacentElement("afterend", readMore);
-            }
-        } else {
-            if(el.nextElementSibling && el.nextElementSibling.classList.contains("read-more-comment")){
-                el.nextElementSibling.remove();
-            }
-        }
-    });
-}
-document.addEventListener("click", function(e){
-    if(e.target.classList.contains("read-more-comment")){
-        const textDiv = e.target.previousElementSibling;
-        textDiv.classList.toggle("expanded");
-        e.target.innerText = textDiv.classList.contains("expanded")?"Read less":"Read more";
-    }
-});
-
-// ======================= SHOW NOTIFICATION =====================
-function showNotification(sectionId, message){
-    const notification =
-        document.getElementById(sectionId)
-        .querySelector(".notifications");
-
-    if(!notification) return;
-
-    notification.innerText = message;
-    notification.style.display = "block";
-
-    clearTimeout(notification.hideTimer);
-    notification.hideTimer = setTimeout(()=>{
-        notification.style.display="none";
-    },5000);
-}
-
-
-
-// ======================= CREATE POST =======================
-function createPost() {
-    const text = postText.value.trim();
-    const file = postFile.files[0];
-    const type = activeSection || postType.value;
-
-  // ===== IMAGE SECTION RULE =====
-    if (type === "image" && !file) {
-        showNotification("images", "Image posts require an image file. Please attach an image.");
-        return;
-    }
-  
-
-    const allowedExtensions = {
-        discussion: ["png", "jpg", "jpeg"],
-        document: ["pdf", "xls", "xlsx", "txt", "doc","pptx","docx","odt"],
-        map: ["shp", "geojson", "kml", "kmz", "gpkg", "gdb", "dwg", "dxf", "png", "jpg", "jpeg", "asc", "img", "tiff", "tif", "pbf", "wmts", "wms", "wfs", "qgz", "mxd", "aprx", "xls", "mbtiles", "svg"],
-        image: ["png", "jpg", "jpeg"]
-    };
-
-    // Don't allow empty post (no text & no file)
-    if (!text && !file) return;
-
-    // Validate file if present
-    if (file) {
-        const ext = file.name.split('.').pop().toLowerCase();
-        if (!allowedExtensions[type] || !allowedExtensions[type].includes(ext)) {
-            alert(`Invalid file type for ${type} post. Allowed: ${allowedExtensions[type].join(", ")}`);
-            return;
-        }
-    } else if (type !== "discussion" && type !== "image") {
-        // For document/map types, file is required
-        alert("You must attach a file for this post!");
-        return;
-    }
-
-    // Create post element
-    const ts = Date.now();
-    const post = document.createElement("div");
-    post.className = "post";
-    post.dataset.time = ts;
-    post.dataset.reactions = 0;
-    post.dataset.username = currentUsername;
-    post.dataset.email = currentEmail;
-
-    post.innerHTML = `
-        <div class="post-header">
-            <div>
-                <img src="${currentProfilePic || ''}">
-                <span>${currentUsername}</span>
-            </div>
-            <button onclick="deletePost(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 8px;border-radius:5px;cursor:pointer;">Delete</button>
-        </div>
-        <div class="post-content">${text}</div>
-        <div class="reactions">
-            <span onclick="react(this)">👍 <b>0</b></span>
-            <span onclick="react(this)">❤️ <b>0</b></span>
-            <span onclick="react(this)">😂 <b>0</b></span>
-            <span onclick="react(this)">😮 <b>0</b></span>
-            <span onclick="react(this)">😢 <b>0</b></span>
-        </div>
-        <div class="comments"></div>
-        <div class="comment-wrapper">
-            <input type="text" class="comment-input" placeholder="Write a comment...">
-            <button onclick="addComment(this)">Send</button>
-        </div>
-    `;
-
-    // Handle file if attached
-    if (file) {
-        const mediaDiv = post.querySelector(".post-content");
-
-        if (type === "image" || type === "discussion") {
-            const imgURL = URL.createObjectURL(file);
-            const tempImg = new Image();
-            tempImg.onload = function () {
-                const canvas = document.createElement("canvas");
-                canvas.width = 1080;
-                canvas.height = 720;
-                const ctx = canvas.getContext("2d");
-
-                const aspectRatio = tempImg.width / tempImg.height;
-                const targetRatio = 1080 / 720;
-                let sx = 0, sy = 0, sWidth = tempImg.width, sHeight = tempImg.height;
-
-                if (aspectRatio > targetRatio) {
-                    sWidth = tempImg.height * targetRatio;
-                    sx = (tempImg.width - sWidth) / 2;
-                } else {
-                    sHeight = tempImg.width / targetRatio;
-                    sy = (tempImg.height - sHeight) / 2;
-                }
-
-                ctx.drawImage(tempImg, sx, sy, sWidth, sHeight, 0, 0, 1080, 720);
-
-                const finalImgURL = canvas.toDataURL("image/png");
-                const img = document.createElement("img");
-                img.src = finalImgURL;
-                img.style.cursor = "pointer";
-                img.onclick = () => openImagePreview(finalImgURL);
-                mediaDiv.appendChild(img);
-
-                // Download button
-                const dlWrap = document.createElement("div");
-                dlWrap.className = "image-download-wrapper";
-                const btn = document.createElement("button");
-                btn.className = "download-btn";
-                btn.innerHTML = "⬇ Download image";
-                btn.onclick = () => {
-                    const a = document.createElement("a");
-                    a.href = finalImgURL;
-                    a.download = file.name;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                };
-                dlWrap.appendChild(btn);
-                mediaDiv.appendChild(dlWrap);
-            };
-            tempImg.src = imgURL;
-        } else {
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(file);
-            a.download = file.name;
-            a.textContent = file.name;
-            a.style.display = "block";
-            a.style.marginTop = "10px";
-            a.target = "_blank";
-            mediaDiv.appendChild(a);
-        }
-    }
-
-    // Append to correct container
-    const containers = { discussion: "discussions", map: "maps", document: "resources", image: "images" };
-    const container = document.getElementById(containers[type]);
-    if (!container) return alert("No container found for this post type.");
-    container.appendChild(post);
-
-     // NOTIFICATIONS APPEAR ON TOP
-    showNotification(containers[type], `${currentUsername} posted a new ${type}!`);
-
-
-    // Reset inputs
-    postText.value = "";
-    postFile.value = "";
-
-    addReadMoreIfNeeded(post, ".post-content");
-}
-
-
- 
-
-// ======================= CREATE POLL =======================
-function createPoll() {
-    const question = prompt("Enter your poll question:");
-    if (!question) return alert("Poll question cannot be empty.");
-
-    const options = prompt("Enter options separated by commas (e.g., Yes,No,Maybe):");
-    if (!options) return alert("You must provide poll options.");
-
-    const optionArray = options.split(",").map(opt => opt.trim()).filter(opt => opt);
-    if(optionArray.length < 2) return alert("Provide at least two options.");
-
-    const ts = Date.now();
-    const post = document.createElement("div");
-    post.className = "post";
-    post.dataset.time = ts;
-    post.dataset.reactions = 0;
-    post.dataset.username = currentUsername;
-    post.dataset.email = currentEmail;
-
-    let pollHTML = `<div class="post-header">
-                        <div>
-                            <img src="${currentProfilePic || ''}">
-                            <span>${currentUsername}</span>
+        
+        <div class="user-menu">
+            <div class="notifications" id="notificationsBtn">
+                <i class="fas fa-bell fa-lg"></i>
+                <div class="notification-badge" id="notificationCount">3</div>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">Notifications</div>
+                    <div class="notification-item unread">
+                        <div class="notification-icon like">
+                            <i class="fas fa-heart"></i>
                         </div>
-                        <button onclick="deletePost(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 8px;border-radius:5px;cursor:pointer;">Delete</button>
+                        <div>
+                            <div class="notification-text">
+                                <strong>Alex Maputo</strong> liked your post about climate change
+                            </div>
+                            <div class="notification-time">2 minutes ago</div>
+                        </div>
                     </div>
-                    <div class="post-content"><b>Poll:</b> ${question}</div>
-                    <div class="poll-options">`;
-
-    optionArray.forEach(opt => {
-        pollHTML += `<button onclick="votePoll(this)" style="margin:3px;padding:5px 10px;border-radius:8px;background:#e8f5e9;border:none;cursor:pointer;">
-                        ${opt} <span class="vote-count">0</span>
-                     </button>`;
-    });
-
-    pollHTML += `</div>
-                 <div class="reactions">
-                     <span onclick="react(this)">👍 <b>0</b></span>
-                     <span onclick="react(this)">❤️ <b>0</b></span>
-                     <span onclick="react(this)">😂 <b>0</b></span>
-                     <span onclick="react(this)">😮 <b>0</b></span>
-                     <span onclick="react(this)">😢 <b>0</b></span>
-                 </div>`;
-
-    post.innerHTML = pollHTML;
-
-    // Append poll to discussions by default
-    const container = document.getElementById("discussions");
-    container.appendChild(post);
-
-    showNotification("discussions", `${currentUsername} created a new poll!`);
-}
-
-
-// ======================= CREATE PHOTO POLL =======================
-function buildPhotoPoll(question, options) {
-    const ts = Date.now();
-    const post = document.createElement("div");
-    post.className = "post";
-    post.dataset.time = ts;
-    post.dataset.reactions = 0;
-    post.dataset.voted = "false";
-
-    let optionsHTML = options.map((opt, i) => `
-        <div class="photo-option" onclick="votePhotoPoll(this)">
-            <img src="${opt.imgURL}">
-            <div class="photo-name">${opt.name}</div>
-            <div class="photo-votes">Votes: <span>0</span></div>
-        </div>
-    `).join("");
-
-    post.innerHTML = `
-        <div class="post-header">
-            <div>
-                <img src="${currentProfilePic || ''}">
-                <span>${currentUsername}</span>
+                    <div class="notification-item unread">
+                        <div class="notification-icon comment">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div>
+                            <div class="notification-text">
+                                <strong>Sarah Geology</strong> commented on your map
+                            </div>
+                            <div class="notification-time">1 hour ago</div>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon share">
+                            <i class="fas fa-share"></i>
+                        </div>
+                        <div>
+                            <div class="notification-text">
+                                Your document has been shared 5 times
+                            </div>
+                            <div class="notification-time">3 hours ago</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button onclick="deletePost(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 8px;border-radius:5px;">Delete</button>
-        </div>
-
-        <div class="post-content"><b>Photo Poll:</b> ${question}</div>
-        <div class="photo-poll">${optionsHTML}</div>
-
-        <div class="reactions">
-            <span onclick="react(this)">👍 <b>0</b></span>
-            <span onclick="react(this)">❤️ <b>0</b></span>
-            <span onclick="react(this)">😂 <b>0</b></span>
-            <span onclick="react(this)">😮 <b>0</b></span>
-            <span onclick="react(this)">😢 <b>0</b></span>
-        </div>
-    `;
-
-    document.getElementById("discussions").appendChild(post);
-    showNotification("discussions", `${currentUsername} created a photo poll!`);
-}
-function votePhotoPoll(optionDiv) {
-    const post = optionDiv.closest(".post");
-    if (post.dataset.voted === "true") return;
-
-    const countSpan = optionDiv.querySelector(".photo-votes span");
-    countSpan.innerText = parseInt(countSpan.innerText) + 1;
-
-    post.dataset.voted = "true";
-
-    // Disable all options visually
-    post.querySelectorAll(".photo-option").forEach(opt => {
-        opt.style.opacity = "0.6";
-        opt.style.pointerEvents = "none";
-    });
-}
-    
-
-// ======================= VOTE ON POLL =======================
-function votePoll(btn){
-    const countSpan = btn.querySelector(".vote-count");
-    countSpan.innerText = parseInt(countSpan.innerText) + 1;
-
-    // Disable other options after vote
-    const buttons = btn.parentElement.querySelectorAll("button");
-    buttons.forEach(b => b.disabled = true);
-}
-
-
-
-
-
-
-
-
-// DELETE POST
-function deletePost(btn){ if(confirm("Delete this post?")) btn.closest(".post").remove(); }
-
-// ======================= COMMENTS & REPLIES =======================
-function addComment(btn){
-    const input=btn.previousElementSibling; const text=input.value.trim();
-    if(!text) return; const ts=Date.now();
-    const comment=document.createElement("div"); comment.className="comment"; comment.dataset.time=ts;
-    comment.dataset.username=currentUsername; comment.dataset.email=currentEmail;
-    comment.innerHTML=`
-        <div class="comment-header">
-            <div>
-                <img src="${currentProfilePic || ''}">
-                <span>${currentUsername}</span>
+            
+            <div class="user-profile" id="userProfileBtn">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                     alt="User Avatar" class="user-avatar">
+                <div class="user-info">
+                    <h4 id="username">John Geographer</h4>
+                    <span>BSC-GEO-21-05</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
             </div>
-            <button onclick="deleteComment(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 5px;border-radius:5px;cursor:pointer;font-size:11px;">X</button>
-        </div>
-        <div class="comment-text">${text}</div>
-        <div class="replies"></div>
-        <div class="reply-wrapper">
-            <input type="text" class="reply-input" placeholder="Reply...">
-            <button onclick="addReply(this)">Send</button>
-        </div>`;
-    btn.closest(".post").querySelector(".comments").appendChild(comment);
-    input.value="";
-}
-function deleteComment(btn){ btn.closest(".comment").remove(); }
-function addReply(btn){
-    const input=btn.previousElementSibling; const text=input.value.trim();
-    if(!text) return; const ts=Date.now();
-    const reply=document.createElement("div"); reply.className="reply"; reply.dataset.time=ts;
-    reply.dataset.username=currentUsername; reply.dataset.email=currentEmail;
-    reply.innerHTML=`
-        <div class="reply-header">
-            <div>
-                <img src="${currentProfilePic || ''}">
-                <span>${currentUsername}</span>
+            
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-user"></i> My Profile
+                </a>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-map-marked-alt"></i> My Maps
+                </a>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-file-alt"></i> My Documents
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="logout.php" class="dropdown-item">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
             </div>
-            <button onclick="deleteReply(this)" style="background:#d32f2f;color:#fff;border:none;padding:2px 5px;border-radius:5px;cursor:pointer;font-size:11px;">X</button>
         </div>
-        <div class="reply-text">${text}</div>`;
-    btn.closest(".comment").querySelector(".replies").appendChild(reply);
-    input.value="";
-}
-function deleteReply(btn){ btn.closest(".reply").remove(); }
+    </nav>
 
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <!-- Sidebar Menu -->
+        <div class="sidebar">
+            <div class="sidebar-menu">
+                <div class="menu-title">Main Menu</div>
+                <a href="#" class="menu-item active">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-comments"></i> Discussions
+                    <span class="badge">12</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-map"></i> Interactive Maps
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-file-alt"></i> Documents Library
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-calendar-alt"></i> Events
+                    <span class="badge">5</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-users"></i> Members Directory
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-chart-bar"></i> Analytics
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-camera"></i> Photo Gallery
+                </a>
+            </div>
+            
+            <div class="stats-card">
+                <div class="menu-title">Your Activity</div>
+                <div class="stat-item">
+                    <span>Posts Created</span>
+                    <span class="stat-value">24</span>
+                </div>
+                <div class="stat-item">
+                    <span>Maps Shared</span>
+                    <span class="stat-value">8</span>
+                </div>
+                <div class="stat-item">
+                    <span>Documents Uploaded</span>
+                    <span class="stat-value">15</span>
+                </div>
+                <div class="stat-item">
+                    <span>Connections</span>
+                    <span class="stat-value">142</span>
+                </div>
+            </div>
+        </div>
 
-// ======================= REACTIONS =======================
-function react(span){
-    const post = span.closest(".post");
-    const reactionsContainer = span.closest(".reactions");
-    const allReactions = reactionsContainer.querySelectorAll("span");
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <h2>Welcome back, <span id="welcomeName">John</span>! 🌍</h2>
+                <p>Explore the latest discussions, share your geographical findings, and connect with fellow enthusiasts.</p>
+            </div>
 
-    // Previously selected reaction index (if any)
-    const prevIndex = post.dataset.userReactionIndex;
-    const currentIndex = Array.from(allReactions).indexOf(span);
+            <!-- Post Creator -->
+            <div class="post-creator">
+                <div class="post-tabs">
+                    <button class="post-tab active" data-type="discussion">
+                        <i class="fas fa-comment-dots"></i> Discussion
+                    </button>
+                    <button class="post-tab" data-type="map">
+                        <i class="fas fa-map-marked-alt"></i> Map
+                    </button>
+                    <button class="post-tab" data-type="document">
+                        <i class="fas fa-file-alt"></i> Document
+                    </button>
+                    <button class="post-tab" data-type="image">
+                        <i class="fas fa-image"></i> Image
+                    </button>
+                    <button class="post-tab" data-type="poll">
+                        <i class="fas fa-chart-pie"></i> Poll
+                    </button>
+                </div>
 
-    // Helper to recalculate total reactions
-    const updateTotal = () => {
-        post.dataset.reactions = Array.from(allReactions)
-            .reduce((sum, r) => sum + parseInt(r.querySelector("b").innerText), 0);
-    };
+                <!-- Discussion Form -->
+                <form class="post-form active" id="discussionForm">
+                    <textarea class="post-input" placeholder="What geographical topic would you like to discuss?" required></textarea>
+                    <div class="post-actions">
+                        <div class="post-tags">
+                            <span class="tag">#geography</span>
+                            <span class="tag">#climate</span>
+                            <span class="tag">#maps</span>
+                            <span class="tag">#environment</span>
+                            <span class="tag">+ Add</span>
+                        </div>
+                        <button type="submit" class="post-btn">
+                            <i class="fas fa-paper-plane"></i> Post Discussion
+                        </button>
+                    </div>
+                </form>
 
-    // ===== UNDO (clicked same reaction again) =====
-    if (prevIndex !== undefined && parseInt(prevIndex) === currentIndex) {
-        const countEl = span.querySelector("b");
-        countEl.innerText = Math.max(0, parseInt(countEl.innerText) - 1);
-        span.classList.remove("active");
-        delete post.dataset.userReactionIndex;
-        updateTotal();
-        return;
-    }
+                <!-- Map Form -->
+                <form class="post-form" id="mapForm">
+                    <textarea class="post-input" placeholder="Describe your map or geographical finding..." required></textarea>
+                    <div class="file-upload" id="mapUpload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Upload map file (KML, GPX, GeoJSON, or image)</p>
+                        <input type="file" accept=".kml,.gpx,.geojson,.jpg,.png,.pdf" hidden>
+                    </div>
+                    <div class="file-preview" id="mapPreview"></div>
+                    <div class="post-actions">
+                        <button type="submit" class="post-btn">
+                            <i class="fas fa-share-alt"></i> Share Map
+                        </button>
+                    </div>
+                </form>
 
-    // ===== SWITCH (remove previous reaction) =====
-    if (prevIndex !== undefined) {
-        const prevSpan = allReactions[prevIndex];
-        const prevCount = prevSpan.querySelector("b");
-        prevCount.innerText = Math.max(0, parseInt(prevCount.innerText) - 1);
-        prevSpan.classList.remove("active");
-    }
+                <!-- Document Form -->
+                <form class="post-form" id="documentForm">
+                    <textarea class="post-input" placeholder="Describe your document (research, article, report)..." required></textarea>
+                    <div class="file-upload" id="docUpload">
+                        <i class="fas fa-file-upload"></i>
+                        <p>Upload document (PDF, DOC, PPT) - Max 10MB</p>
+                        <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" hidden>
+                    </div>
+                    <div class="file-preview" id="docPreview"></div>
+                    <div class="post-actions">
+                        <button type="submit" class="post-btn">
+                            <i class="fas fa-upload"></i> Upload Document
+                        </button>
+                    </div>
+                </form>
 
-    // ===== ADD NEW REACTION =====
-    const countEl = span.querySelector("b");
-    countEl.innerText = parseInt(countEl.innerText) + 1;
-    span.classList.add("active");
-    post.dataset.userReactionIndex = currentIndex;
+                <!-- Image Form -->
+                <form class="post-form" id="imageForm">
+                    <textarea class="post-input" placeholder="Describe your image or photo..." required></textarea>
+                    <div class="file-upload" id="imageUpload">
+                        <i class="fas fa-images"></i>
+                        <p>Upload images (JPG, PNG, GIF) - Max 5MB each</p>
+                        <input type="file" accept="image/*" multiple hidden>
+                    </div>
+                    <div class="file-preview" id="imagePreview"></div>
+                    
+                    <!-- Photo Poll Option (Executive Only) -->
+                    <div id="photoPollSection" style="display: none; margin-top: 1rem; padding: 1rem; background: rgba(255, 152, 0, 0.1); border-radius: 8px;">
+                        <label style="font-weight: 600; color: var(--warning); display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-star"></i> Executive Photo Poll
+                        </label>
+                        <p style="font-size: 0.9rem; margin: 0.5rem 0; color: var(--dark);">
+                            This will create a photo contest poll for society members. Only executives can create these.
+                        </p>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="createPhotoPoll"> Create photo poll from these images
+                        </label>
+                        <div id="pollOptions" style="display: none; margin-top: 1rem;">
+                            <input type="text" class="post-input" placeholder="Poll question..." style="min-height: 50px; margin-bottom: 1rem;">
+                            <div class="poll-option">
+                                <input type="text" placeholder="Option 1">
+                            </div>
+                            <div class="poll-option">
+                                <input type="text" placeholder="Option 2">
+                            </div>
+                            <button type="button" class="add-option">
+                                <i class="fas fa-plus"></i> Add Option
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="post-actions">
+                        <button type="submit" class="post-btn">
+                            <i class="fas fa-image"></i> Share Images
+                        </button>
+                    </div>
+                </form>
 
-    updateTotal();
-}
+                <!-- Poll Form -->
+                <form class="post-form" id="pollForm">
+                    <input type="text" class="post-input" placeholder="Poll question..." style="min-height: 60px; margin-bottom: 1rem;" required>
+                    <div id="pollOptionsContainer">
+                        <div class="poll-option">
+                            <input type="text" placeholder="Option 1" required>
+                        </div>
+                        <div class="poll-option">
+                            <input type="text" placeholder="Option 2" required>
+                        </div>
+                    </div>
+                    <button type="button" class="add-option" id="addPollOption">
+                        <i class="fas fa-plus"></i> Add Option
+                    </button>
+                    <div style="margin-top: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="allowMultiple"> Allow multiple selections
+                        </label>
+                    </div>
+                    <div class="post-actions" style="margin-top: 1.5rem;">
+                        <button type="submit" class="post-btn">
+                            <i class="fas fa-poll"></i> Create Poll
+                        </button>
+                    </div>
+                </form>
+            </div>
 
+            <!-- Feed Header -->
+            <div class="feed-header">
+                <div class="filter-buttons">
+                    <button class="filter-btn active">All Posts</button>
+                    <button class="filter-btn">Discussions</button>
+                    <button class="filter-btn">Maps</button>
+                    <button class="filter-btn">Documents</button>
+                    <button class="filter-btn">Images</button>
+                </div>
+                <select class="sort-select">
+                    <option>Latest First</option>
+                    <option>Most Popular</option>
+                    <option>Most Commented</option>
+                </select>
+            </div>
 
-// ======================= TOOLTIP EMAIL ON USER CLICK (3s) =======================
-const tooltip = document.createElement("div");
-tooltip.style.position = "absolute";
-tooltip.style.background = "#2e7d32";
-tooltip.style.color = "#fff";
-tooltip.style.padding = "4px 8px";
-tooltip.style.borderRadius = "4px";
-tooltip.style.fontSize = "12px";
-tooltip.style.display = "none";
-tooltip.style.zIndex = "9999";
-document.body.appendChild(tooltip);
+            <!-- Posts Feed -->
+            <div class="posts-feed" id="postsFeed">
+                <!-- Post 1: Discussion -->
+                <div class="post-card" data-type="discussion">
+                    <div class="post-header">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                             alt="User Avatar" class="post-avatar">
+                        <div class="post-meta">
+                            <h4>Dr. Sarah Geology <span class="post-type">Discussion</span></h4>
+                            <span><i class="far fa-clock"></i> 2 hours ago • <i class="fas fa-globe-africa"></i> Public</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just returned from fieldwork in the Shire Valley. The sediment layers tell a fascinating story of climatic changes over the past 10,000 years. Found evidence of alternating wet and dry periods that correlate with migration patterns in the region.</p>
+                        <p>The most interesting discovery was a layer of volcanic ash from the 19th century that perfectly preserved pollen samples, giving us unprecedented insight into the vegetation at that time. This could revolutionize our understanding of pre-colonial agricultural practices in Malawi.</p>
+                        <span class="read-more">Read more</span>
+                    </div>
+                    <div class="post-actions-bar">
+                        <div class="action-buttons">
+                            <button class="action-btn like-btn" data-post="1">
+                                <i class="far fa-heart"></i> <span>24</span>
+                            </button>
+                            <button class="action-btn comment-btn" data-post="1">
+                                <i class="far fa-comment"></i> <span>8</span>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                        </div>
+                        <span><i class="fas fa-eye"></i> 142 views</span>
+                    </div>
+                    
+                    <!-- Comments Section -->
+                    <div class="comments-section" id="comments1">
+                        <div class="comment">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                 alt="User Avatar" class="comment-avatar">
+                            <div class="comment-content">
+                                <div class="comment-header">
+                                    <span class="comment-author">Professor Chisale</span>
+                                    <span class="comment-time">1 hour ago</span>
+                                </div>
+                                <p class="comment-text">Fascinating findings, Sarah! Have you compared the pollen samples with cores from Lake Malawi?</p>
+                                <div class="comment-actions">
+                                    <span class="comment-reply" data-comment="1-1">Reply</span>
+                                </div>
+                                
+                                <!-- Reply Form -->
+                                <div class="reply-form" id="replyForm1-1">
+                                    <textarea class="reply-input" placeholder="Write a reply..."></textarea>
+                                    <button class="comment-btn" style="margin-top: 0.5rem;">Reply</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nested-comments">
+                            <div class="comment">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                     alt="User Avatar" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <span class="comment-author">Dr. Sarah Geology</span>
+                                        <span class="comment-time">45 minutes ago</span>
+                                    </div>
+                                    <p class="comment-text">Yes, Professor! The correlation is striking. The ash layer appears in both records, which gives us excellent chronological control.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="add-comment">
+                            <input type="text" class="comment-input" placeholder="Add a comment...">
+                            <button class="comment-btn">Post</button>
+                        </div>
+                    </div>
+                </div>
 
-let tooltipTimeout;
+                <!-- Post 2: Map -->
+                <div class="post-card" data-type="map">
+                    <div class="post-header">
+                        <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                             alt="User Avatar" class="post-avatar">
+                        <div class="post-meta">
+                            <h4>Alex Maputo <span class="post-type">Interactive Map</span></h4>
+                            <span><i class="far fa-clock"></i> 1 day ago • <i class="fas fa-users"></i> Society Only</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>Created an interactive map showing deforestation patterns in the Zomba Plateau region from 1990-2023. The visualization shows alarming rates of forest loss, particularly on the eastern slopes.</p>
+                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Deforestation Map" class="post-image" data-image="map1">
+                    </div>
+                    <div class="post-actions-bar">
+                        <div class="action-buttons">
+                            <button class="action-btn like-btn" data-post="2">
+                                <i class="far fa-heart"></i> <span>42</span>
+                            </button>
+                            <button class="action-btn comment-btn" data-post="2">
+                                <i class="far fa-comment"></i> <span>15</span>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                        <span><i class="fas fa-eye"></i> 231 views</span>
+                    </div>
+                </div>
 
-document.addEventListener("click", function(e){
-    const targetSpan = e.target.closest(".post-header span, .comment-header span, .reply-header span");
-    if(targetSpan){
-        const parentDiv = targetSpan.closest(".post, .comment, .reply");
-        const email = parentDiv.dataset.email || "No email";
+                <!-- Post 3: Image with Photo Poll -->
+                <div class="post-card" data-type="image">
+                    <div class="post-header">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616c113a1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                             alt="User Avatar" class="post-avatar">
+                        <div class="post-meta">
+                            <h4>Executive Committee <span class="post-type">Photo Poll</span></h4>
+                            <span><i class="far fa-clock"></i> 3 days ago • <i class="fas fa-star"></i> Executive</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>📸 PHOTO CONTEST: "Malawi's Geological Wonders" 📸</p>
+                        <p>Vote for your favorite geological formation photo! The winning photographer gets featured in our annual journal.</p>
+                        
+                        <div class="post-poll">
+                            <div class="poll-question">Which geological formation is most impressive?</div>
+                            <div class="poll-option-item voted" style="cursor: default;">
+                                Mulanje Massif granite peaks
+                                <div class="poll-bar">
+                                    <div class="poll-fill" style="width: 65%"></div>
+                                </div>
+                                <span class="poll-percentage">65%</span>
+                            </div>
+                            <div class="poll-option-item" style="cursor: default;">
+                                Chombe Plateau sandstone cliffs
+                                <div class="poll-bar">
+                                    <div class="poll-fill" style="width: 22%"></div>
+                                </div>
+                                <span class="poll-percentage">22%</span>
+                            </div>
+                            <div class="poll-option-item" style="cursor: default;">
+                                Lake Malawi rift valley
+                                <div class="poll-bar">
+                                    <div class="poll-fill" style="width: 13%"></div>
+                                </div>
+                                <span class="poll-percentage">13%</span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem;">
+                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                 alt="Geological formation" class="post-image" data-image="poll1">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                 alt="Geological formation" class="post-image" data-image="poll2">
+                        </div>
+                    </div>
+                    <div class="post-actions-bar">
+                        <div class="action-buttons">
+                            <button class="action-btn">
+                                <i class="fas fa-vote-yea"></i> <span>89 votes</span>
+                            </button>
+                            <button class="action-btn">
+                                <i class="far fa-clock"></i> 2 days left
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        // Position tooltip above the username
-        const rect = targetSpan.getBoundingClientRect();
-        tooltip.style.top = Math.max(5, rect.top - 28 + window.scrollY) + "px";
-        tooltip.style.left = Math.max(5, rect.left + window.scrollX) + "px";
-        tooltip.innerText = email;
-        tooltip.style.display = "block";
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <!-- Upcoming Events -->
+            <div class="events-card">
+                <div class="menu-title">Upcoming Events</div>
+                <div class="event-item">
+                    <div class="event-date">June 15, 2024 • 2:00 PM</div>
+                    <div class="event-title">Field Trip: Zomba Plateau Geology</div>
+                    <div class="event-location">
+                        <i class="fas fa-map-marker-alt"></i> Zomba Mountain
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-date">June 20, 2024 • 4:00 PM</div>
+                    <div class="event-title">Guest Lecture: Climate Change in Malawi</div>
+                    <div class="event-location">
+                        <i class="fas fa-university"></i> Chancellor College
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-date">June 25, 2024 • 9:00 AM</div>
+                    <div class="event-title">Mapathon: Mapping Rural Communities</div>
+                    <div class="event-location">
+                        <i class="fas fa-laptop-code"></i> Computer Lab 3
+                    </div>
+                </div>
+            </div>
 
-        // Auto-hide after 3 seconds
-        clearTimeout(tooltipTimeout);
-        tooltipTimeout = setTimeout(()=>tooltip.style.display="none", 3000);
-    } else {
-        tooltip.style.display = "none";
-        clearTimeout(tooltipTimeout);
-    }
-});
+            <!-- Online Members -->
+            <div class="online-members">
+                <div class="menu-title">Online Now (24)</div>
+                <div class="member-list">
+                    <div class="member">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                             alt="Member" class="member-avatar">
+                        <div class="member-info">
+                            <h5>Dr. Sarah Geology</h5>
+                            <span>Online now</span>
+                        </div>
+                    </div>
+                    <div class="member">
+                        <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                             alt="Member" class="member-avatar">
+                        <div class="member-info">
+                            <h5>Alex Maputo</h5>
+                            <span>Online now</span>
+                        </div>
+                    </div>
+                    <div class="member">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                             alt="Member" class="member-avatar">
+                        <div class="member-info">
+                            <h5>Professor Chisale</h5>
+                            <span>Online now</span>
+                        </div>
+                    </div>
+                    <div class="member">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616c113a1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                             alt="Member" class="member-avatar">
+                        <div class="member-info">
+                            <h5>Grace Cartographer</h5>
+                            <span>Last seen 5 min ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <img src="" alt="" class="modal-image" id="modalImage">
+            <button class="modal-download" id="modalDownload">
+                <i class="fas fa-download"></i> Download
+            </button>
+        </div>
+    </div>
 
-// ======================= SORT POSTS =======================
-function sortPosts(){
-    const sort=document.getElementById("sortSelect").value;
-    const containers=["discussions","maps","resources","images"];
-    containers.forEach(id=>{
-        const container=document.getElementById(id);
-        Array.from(container.children).sort((a,b)=>{
-            if(sort==="latest") return b.dataset.time-a.dataset.time;
-            if(sort==="popular") return b.dataset.reactions-a.dataset.reactions;
-        }).forEach(el=>container.appendChild(el));
-    });
-}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // User data (would normally come from backend)
+            const userData = {
+                name: "John Geographer",
+                username: "johng_geo",
+                isExecutive: true,
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+            };
 
-// ======================= SIDEBAR TOGGLE =======================
-function toggleSidebar(){
-    document.getElementById("sidebarMenu").classList.toggle("active");
-}
+            // Initialize
+            updateWelcomeMessage();
+            setupEventListeners();
+            loadSamplePosts();
+            checkExecutiveStatus();
 
-/* ===== SCROLL SPY ===== */
-let scrollSpyEnabled=true;
-
-const sections=["discussions","maps","resources","images"];
-
-function highlightMenu(id){
-    menuLinks.forEach(l=>{
-        l.classList.toggle("active",l.getAttribute("href")==="#"+id);
-    });
-}
-
-window.addEventListener("scroll",()=>{
-    if(!scrollSpyEnabled) return;
-
-    for(const id of sections){
-        const el=document.getElementById(id);
-        const r=el.getBoundingClientRect();
-        if(r.top<=120 && r.bottom>120){
-            highlightMenu(id);
-            if(window.innerWidth<=1024){
-                sidebarMenu.classList.add("active");
+            // Update welcome message with user's first name
+            function updateWelcomeMessage() {
+                const firstName = userData.name.split(' ')[0];
+                document.getElementById('welcomeName').textContent = firstName;
+                document.getElementById('username').textContent = userData.name;
             }
-            break;
-        }
-    }
-});
 
+            // Check if user is executive and show photo poll option
+            function checkExecutiveStatus() {
+                const photoPollSection = document.getElementById('photoPollSection');
+                if (userData.isExecutive) {
+                    photoPollSection.style.display = 'block';
+                    
+                    // Toggle poll options when checkbox is checked
+                    document.getElementById('createPhotoPoll').addEventListener('change', function(e) {
+                        document.getElementById('pollOptions').style.display = e.target.checked ? 'block' : 'none';
+                    });
+                }
+            }
 
-// ======================= MENU FILTER + CONTEXT CONTROL =======================
-const containers = ["discussions","maps","resources","images"];
-const postTypeSelect = document.getElementById("postType");
-const menuLinks=document.querySelectorAll(".menu a");
-const sectionMap = {
-    discussions: "discussion",
-    resources: "document",
-    maps: "map",
-    images: "image"
-};
+            // Setup all event listeners
+            function setupEventListeners() {
+                // Post tabs switching
+                document.querySelectorAll('.post-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const type = this.dataset.type;
+                        
+                        // Update active tab
+                        document.querySelectorAll('.post-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Show corresponding form
+                        document.querySelectorAll('.post-form').forEach(form => {
+                            form.classList.remove('active');
+                        });
+                        document.getElementById(`${type}Form`).classList.add('active');
+                    });
+                });
 
-menuLinks.forEach(link=>{
-    link.addEventListener("click", function(e){
-        e.preventDefault();
+                // File upload handling
+                setupFileUpload('mapUpload', 'mapPreview');
+                setupFileUpload('docUpload', 'docPreview');
+                setupFileUpload('imageUpload', 'imagePreview');
 
-        // Active menu styling
-        menuLinks.forEach(l=>l.classList.remove("active"));
-        this.classList.add("active");
+                // Like buttons
+                document.querySelectorAll('.like-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const postId = this.dataset.post;
+                        const icon = this.querySelector('i');
+                        const countSpan = this.querySelector('span');
+                        let count = parseInt(countSpan.textContent);
+                        
+                        if (icon.classList.contains('far')) {
+                            icon.classList.replace('far', 'fas');
+                            icon.classList.add('pulse');
+                            countSpan.textContent = count + 1;
+                            this.classList.add('active');
+                            
+                            // Remove pulse after animation
+                            setTimeout(() => {
+                                icon.classList.remove('pulse');
+                            }, 600);
+                        } else {
+                            icon.classList.replace('fas', 'far');
+                            countSpan.textContent = count - 1;
+                            this.classList.remove('active');
+                        }
+                    });
+                });
 
-        const section = this.getAttribute("href").substring(1);
+                // Comment toggle
+                document.querySelectorAll('.comment-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const postId = this.dataset.post;
+                        const commentsSection = document.getElementById(`comments${postId}`);
+                        commentsSection.classList.toggle('show');
+                    });
+                });
 
-        if(section === "all"){
-            showAllPosts();
-            activeSection = "discussion";
-            postTypeSelect.value = "discussion";
-            postTypeSelect.disabled = false;
-        } else {
-            filterPosts(section);
-            activeSection = sectionMap[section];
-            postTypeSelect.value = activeSection;
-            postTypeSelect.disabled = true; // lock dropdown
-        }
+                // Reply to comment
+                document.querySelectorAll('.comment-reply').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const commentId = this.dataset.comment;
+                        const replyForm = document.getElementById(`replyForm${commentId}`);
+                        replyForm.classList.toggle('show');
+                    });
+                });
 
-        // Close mobile menu
-        document.getElementById("sidebarMenu").classList.remove("active");
-    });
-});
+                // Image modal
+                document.querySelectorAll('.post-image').forEach(img => {
+                    img.addEventListener('click', function() {
+                        const imageUrl = this.src;
+                        const modal = document.getElementById('imageModal');
+                        const modalImage = document.getElementById('modalImage');
+                        
+                        modalImage.src = imageUrl;
+                        modal.classList.add('show');
+                        
+                        // Zoom functionality
+                        let zoomed = false;
+                        modalImage.addEventListener('click', function() {
+                            if (!zoomed) {
+                                this.style.transform = 'scale(2)';
+                                this.style.cursor = 'zoom-out';
+                                zoomed = true;
+                            } else {
+                                this.style.transform = 'scale(1)';
+                                this.style.cursor = 'zoom-in';
+                                zoomed = false;
+                            }
+                        });
+                    });
+                });
 
-function filterPosts(type){
-    containers.forEach(id=>{
-        document.getElementById(id).style.display =
-            id === type ? "block" : "none";
-    });
-}
+                // Close modal
+                document.getElementById('modalClose').addEventListener('click', function() {
+                    document.getElementById('imageModal').classList.remove('show');
+                });
 
+                // Download image
+                document.getElementById('modalDownload').addEventListener('click', function() {
+                    const imageUrl = document.getElementById('modalImage').src;
+                    const link = document.createElement('a');
+                    link.href = imageUrl;
+                    link.download = 'geo-society-image.jpg';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
 
+                // User dropdown
+                document.getElementById('userProfileBtn').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    document.getElementById('dropdownMenu').classList.toggle('show');
+                });
 
+                // Notifications dropdown
+                document.getElementById('notificationsBtn').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    document.getElementById('notificationDropdown').classList.toggle('show');
+                });
 
-function showAllPosts() {
-    const sectionIds = ["discussions","maps","resources","images"];
-    let allPosts = [];
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function() {
+                    document.getElementById('dropdownMenu').classList.remove('show');
+                    document.getElementById('notificationDropdown').classList.remove('show');
+                });
 
-    // Collect all posts
-    sectionIds.forEach(id => {
-        const container = document.getElementById(id);
-        if(container) {
-            allPosts.push(...Array.from(container.children));
-        }
-    });
+                // Filter posts
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const filter = this.textContent.toLowerCase();
+                        filterPosts(filter);
+                    });
+                });
 
-    if(allPosts.length === 0) return; // nothing to show
+                // Sort posts
+                document.querySelector('.sort-select').addEventListener('change', function() {
+                    sortPosts(this.value);
+                });
 
-    const now = Date.now();
-    const oneHour = 60*60*1000;
+                // Search functionality with highlighting
+                const searchInput = document.getElementById('searchInput');
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        searchPosts(this.value);
+                    }, 300);
+                });
 
-    // Convert dataset.time to number
-    allPosts.forEach(post => post.dataset.time = Number(post.dataset.time));
+                // Read more/less functionality
+                document.querySelectorAll('.read-more').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const content = this.previousElementSibling;
+                        if (this.textContent === 'Read more') {
+                            content.style.maxHeight = 'none';
+                            this.textContent = 'Read less';
+                        } else {
+                            content.style.maxHeight = '4.8em'; // Approximately 3 lines
+                            this.textContent = 'Read more';
+                        }
+                    });
+                });
 
-    // Filter posts in last hour
-    let recentPosts = allPosts.filter(post => (now - post.dataset.time) <= oneHour);
+                // Add poll option
+                document.getElementById('addPollOption').addEventListener('click', function() {
+                    const optionsContainer = document.getElementById('pollOptionsContainer');
+                    const optionCount = optionsContainer.children.length + 1;
+                    const newOption = document.createElement('div');
+                    newOption.className = 'poll-option';
+                    newOption.innerHTML = `
+                        <input type="text" placeholder="Option ${optionCount}" required>
+                        <button type="button" class="remove-option" style="background: none; border: none; color: var(--danger); cursor: pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    optionsContainer.appendChild(newOption);
+                    
+                    // Add remove functionality
+                    newOption.querySelector('.remove-option').addEventListener('click', function() {
+                        if (optionsContainer.children.length > 2) {
+                            newOption.remove();
+                        }
+                    });
+                });
 
-    // If none, use latest posts
-    if(recentPosts.length === 0) {
-        recentPosts = allPosts;
-    }
+                // Form submission
+                document.querySelectorAll('.post-form').forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        createPost(this.id.replace('Form', ''));
+                        this.reset();
+                        document.querySelectorAll('.file-preview').forEach(preview => {
+                            preview.innerHTML = '';
+                        });
+                        
+                        // Show success message
+                        showNotification('Post created successfully!', 'success');
+                    });
+                });
+            }
 
-    // Sort by latest
-    recentPosts.sort((a,b) => b.dataset.time - a.dataset.time);
+            // File upload setup
+            function setupFileUpload(uploadId, previewId) {
+                const uploadArea = document.getElementById(uploadId);
+                const fileInput = uploadArea.querySelector('input[type="file"]');
+                const previewArea = document.getElementById(previewId);
+                
+                uploadArea.addEventListener('click', () => fileInput.click());
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.style.borderColor = 'var(--primary-light)';
+                    uploadArea.style.background = 'rgba(76, 175, 80, 0.05)';
+                });
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.style.borderColor = '';
+                    uploadArea.style.background = '';
+                });
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.style.borderColor = '';
+                    uploadArea.style.background = '';
+                    
+                    if (e.dataTransfer.files.length) {
+                        handleFiles(e.dataTransfer.files, previewId);
+                    }
+                });
+                
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length) {
+                        handleFiles(e.target.files, previewId);
+                    }
+                });
+            }
 
-    // Take only first 20
-    const latestPosts = recentPosts.slice(0, 20);
+            // Handle uploaded files
+            function handleFiles(files, previewId) {
+                const previewArea = document.getElementById(previewId);
+                previewArea.innerHTML = '';
+                
+                Array.from(files).forEach((file, index) => {
+                    // Validate file type and size
+                    if (!validateFile(file, previewId)) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        previewItem.innerHTML = `
+                            <img src="${e.target.result}" alt="${file.name}">
+                            <div class="remove-file" data-index="${index}">&times;</div>
+                        `;
+                        previewArea.appendChild(previewItem);
+                        
+                        // Add remove functionality
+                        previewItem.querySelector('.remove-file').addEventListener('click', function() {
+                            previewItem.remove();
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
 
-    // Hide all posts first
-    sectionIds.forEach(id => {
-        const container = document.getElementById(id);
-        if(container) {
-            Array.from(container.children).forEach(post => post.style.display="none");
-        }
-    });
+            // File validation
+            function validateFile(file, previewId) {
+                let isValid = true;
+                let errorMessage = '';
+                
+                // Map files validation
+                if (previewId === 'mapPreview') {
+                    const validTypes = ['.kml', '.gpx', '.geojson', '.jpg', '.png', '.pdf'];
+                    const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+                    if (!validTypes.includes(fileExt)) {
+                        errorMessage = 'Invalid file type for map. Use KML, GPX, GeoJSON, JPG, PNG, or PDF.';
+                        isValid = false;
+                    }
+                    if (file.size > 10 * 1024 * 1024) { // 10MB
+                        errorMessage = 'Map file too large. Max 10MB.';
+                        isValid = false;
+                    }
+                }
+                
+                // Document files validation
+                else if (previewId === 'docPreview') {
+                    const validTypes = ['.pdf', '.doc', '.docx', '.ppt', '.pptx'];
+                    const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+                    if (!validTypes.includes(fileExt)) {
+                        errorMessage = 'Invalid document type. Use PDF, DOC, or PPT.';
+                        isValid = false;
+                    }
+                    if (file.size > 10 * 1024 * 1024) { // 10MB
+                        errorMessage = 'Document too large. Max 10MB.';
+                        isValid = false;
+                    }
+                }
+                
+                // Image files validation
+                else if (previewId === 'imagePreview') {
+                    if (!file.type.startsWith('image/')) {
+                        errorMessage = 'Please upload image files only.';
+                        isValid = false;
+                    }
+                    if (file.size > 5 * 1024 * 1024) { // 5MB
+                        errorMessage = 'Image too large. Max 5MB.';
+                        isValid = false;
+                    }
+                }
+                
+                if (!isValid) {
+                    showNotification(errorMessage, 'error');
+                }
+                
+                return isValid;
+            }
 
-    // Show only selected posts and make their container visible
-    latestPosts.forEach(post => {
-        post.style.display = "block";
-        post.parentElement.style.display = "block";
-    });
+            // Filter posts by type
+            function filterPosts(filter) {
+                const posts = document.querySelectorAll('.post-card');
+                posts.forEach(post => {
+                    if (filter === 'all posts') {
+                        post.style.display = 'block';
+                    } else {
+                        const postType = post.dataset.type;
+                        if (filter.includes(postType)) {
+                            post.style.display = 'block';
+                        } else {
+                            post.style.display = 'none';
+                        }
+                    }
+                });
+            }
 
-    // Remove active menu highlights
-    menuLinks.forEach(l => l.classList.remove("active"));
+            // Sort posts
+            function sortPosts(criteria) {
+                const postsContainer = document.getElementById('postsFeed');
+                const posts = Array.from(postsContainer.children);
+                
+                posts.sort((a, b) => {
+                    if (criteria === 'Most Popular') {
+                        const likesA = parseInt(a.querySelector('.like-btn span').textContent);
+                        const likesB = parseInt(b.querySelector('.like-btn span').textContent);
+                        return likesB - likesA;
+                    } else if (criteria === 'Most Commented') {
+                        const commentsA = parseInt(a.querySelector('.comment-btn span')?.textContent || 0);
+                        const commentsB = parseInt(b.querySelector('.comment-btn span')?.textContent || 0);
+                        return commentsB - commentsA;
+                    }
+                    // Latest First (default)
+                    return 0; // In real app, sort by timestamp
+                });
+                
+                // Reorder posts
+                posts.forEach(post => postsContainer.appendChild(post));
+            }
 
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+            // Search posts with highlighting
+            function searchPosts(query) {
+                if (!query.trim()) {
+                    // Remove highlights
+                    document.querySelectorAll('.highlight').forEach(highlight => {
+                        const parent = highlight.parentNode;
+                        parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                        parent.normalize();
+                    });
+                    return;
+                }
+                
+                const posts = document.querySelectorAll('.post-card');
+                posts.forEach(post => {
+                    const content = post.querySelector('.post-content');
+                    const text = content.textContent;
+                    
+                    // Remove existing highlights
+                    content.querySelectorAll('.highlight').forEach(highlight => {
+                        const parent = highlight.parentNode;
+                        parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                        parent.normalize();
+                    });
+                    
+                    // Add new highlights
+                    const regex = new RegExp(`(${query})`, 'gi');
+                    const highlighted = text.replace(regex, '<span class="highlight">$1</span>');
+                    content.innerHTML = content.innerHTML.replace(text, highlighted);
+                });
+            }
 
+            // Create a new post (simulated)
+            function createPost(type) {
+                const postsContainer = document.getElementById('postsFeed');
+                const postId = Date.now();
+                
+                let postHTML = '';
+                const userName = userData.name;
+                const userAvatar = userData.avatar;
+                
+                switch(type) {
+                    case 'discussion':
+                        postHTML = `
+                            <div class="post-card" data-type="discussion">
+                                <div class="post-header">
+                                    <img src="${userAvatar}" alt="User Avatar" class="post-avatar">
+                                    <div class="post-meta">
+                                        <h4>${userName} <span class="post-type">Discussion</span></h4>
+                                        <span><i class="far fa-clock"></i> Just now • <i class="fas fa-globe-africa"></i> Public</span>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>New discussion started!</p>
+                                </div>
+                                <div class="post-actions-bar">
+                                    <div class="action-buttons">
+                                        <button class="action-btn like-btn" data-post="${postId}">
+                                            <i class="far fa-heart"></i> <span>0</span>
+                                        </button>
+                                        <button class="action-btn comment-btn" data-post="${postId}">
+                                            <i class="far fa-comment"></i> <span>0</span>
+                                        </button>
+                                        <button class="action-btn">
+                                            <i class="fas fa-share"></i> Share
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    // Add other post types...
+                }
+                
+                // Add to top of feed
+                postsContainer.insertAdjacentHTML('afterbegin', postHTML);
+                
+                // Reattach event listeners to new post
+                const newPost = postsContainer.firstElementChild;
+                newPost.querySelector('.like-btn').addEventListener('click', function() {
+                    // Like functionality...
+                });
+                newPost.querySelector('.comment-btn').addEventListener('click', function() {
+                    // Comment functionality...
+                });
+            }
 
+            // Show notification
+            function showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `notification-item ${type === 'error' ? 'unread' : ''}`;
+                notification.innerHTML = `
+                    <div class="notification-icon ${type}">
+                        <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'check-circle'}"></i>
+                    </div>
+                    <div>
+                        <div class="notification-text">${message}</div>
+                        <div class="notification-time">Just now</div>
+                    </div>
+                `;
+                
+                // Add to notifications dropdown
+                const notificationDropdown = document.getElementById('notificationDropdown');
+                notificationDropdown.insertBefore(notification, notificationDropdown.children[1]);
+                
+                // Update badge count
+                const badge = document.getElementById('notificationCount');
+                badge.textContent = parseInt(badge.textContent) + 1;
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    notification.remove();
+                }, 5000);
+            }
 
-
-// ======================= SEARCH & HIGHLIGHT =======================
-function highlightText(element, query) {
-    if (!query) {
-        // Reset all highlights
-        element.querySelectorAll("mark").forEach(m => {
-            const parent = m.parentNode;
-            parent.replaceChild(document.createTextNode(m.innerText), m);
-            parent.normalize();
+            // Load sample posts (in a real app, this would be from an API)
+            function loadSamplePosts() {
+                // Posts are already in HTML
+                console.log('Posts loaded');
+            }
         });
-        return;
-    }
-
-    const regex = new RegExp(`(${query})`, "gi");
-
-    function walk(node) {
-        if (node.nodeType === 3) { // text node
-            const match = node.textContent.match(regex);
-            if (match) {
-                const temp = document.createElement("span");
-                temp.innerHTML = node.textContent.replace(regex, "<mark style='background:#ffe58f'>$1</mark>");
-                node.replaceWith(...temp.childNodes);
-            }
-        } else if (node.nodeType === 1 && node.tagName !== "MARK") {
-            node.childNodes.forEach(walk);
-        }
-    }
-
-    walk(element);
-}
-
-document.getElementById("searchInput").addEventListener("input", function() {
-    const query = this.value.trim().toLowerCase();
-    const posts = document.querySelectorAll(".feed .post");
-
-    posts.forEach(post => {
-        let matched = false;
-
-        // Highlight post content
-        const contentDiv = post.querySelector(".post-content");
-        if (contentDiv.innerText.toLowerCase().includes(query)) {
-            highlightText(contentDiv, query);
-            matched = true;
-        } else {
-            highlightText(contentDiv, ""); // remove old highlights
-        }
-
-        // Highlight comments
-        post.querySelectorAll(".comment .comment-text").forEach(comment => {
-            if (comment.innerText.toLowerCase().includes(query)) {
-                highlightText(comment, query);
-                matched = true;
-            } else {
-                highlightText(comment, "");
-            }
-        });
-
-        // Highlight replies
-        post.querySelectorAll(".reply .reply-text").forEach(reply => {
-            if (reply.innerText.toLowerCase().includes(query)) {
-                highlightText(reply, query);
-                matched = true;
-            } else {
-                highlightText(reply, "");
-            }
-        });
-
-        // Show/hide post based on any match
-        post.style.display = matched || !query ? "" : "none";
-    });
-});
-
-
-
-</script>
-
+    </script>
 </body>
-
 </html>
+
 
 
